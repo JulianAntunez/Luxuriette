@@ -4,38 +4,66 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fantasyglam - Calzados Deportivos</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Luxuriette - Juguetes</title>
+    <link rel="stylesheet" href="../style.css" />
 </head>
 
 <body>
     <header>
-        <div class="logo">Fantasyglam</div>
+        <div class="logo">Luxuriette</div>
         <nav>
             <ul>
                 <li><a href="../index.html">Inicio</a></li>
-                <li><a href="ropa.html">Ropa</a></li>
+                <li><a href="../pages/lingerie.html">Lingerie</a></li>
                 <li><a href="#" id="cart-button">Carrito (<span id="cart-count">0</span>)</a></li>
             </ul>
         </nav>
     </header>
     <main>
         <section class="productos-destacados">
-            <h2>Calzados Deportivos</h2>
+            <h2>Fantasia</h2>
             <div class="productos">
                 <div class="producto">
-                    <img src="img/producto4.jpg" alt="Zapatillas Running" />
-                    <h3>Zapatillas Running</h3>
+                    <img src="../img/juguetes/producto1.jpg" alt="Producto1" />
+                    <h3>Producto1</h3>
                     <p>Comodidad y rendimiento</p>
-                    <button class="add-to-cart" data-product-id="4" data-product-name="Zapatillas Running"
+                    <button class="add-to-cart" data-product-id="4" data-product-name="Producto1" data-product-price="90">Agregar al Carrito</button>
+                </div>
+                <div class="producto">
+                    <img src="../img/juguetes/producto2.jpg" alt="Producto1" />
+                    <h3>Producto2</h3>
+                    <p>Comodidad y rendimiento</p>
+                    <button class="add-to-cart" data-product-id="4" data-product-name="Producto1"
                         data-product-price="90">Agregar al Carrito</button>
                 </div>
+                <div class="producto">
+                    <img src="../img/juguetes/producto3.jpg" alt="Producto1" />
+                    <h3>Producto3</h3>
+                    <p>Comodidad y rendimiento</p>
+                    <button class="add-to-cart" data-product-id="4" data-product-name="Producto1"
+                        data-product-price="90">Agregar al Carrito</button>
+                </div>
+                <div class="producto">
+                    <img src="../img/juguetes/producto4.jpg" alt="Producto1" />
+                    <h3>Producto4</h3>
+                    <p>Comodidad y rendimiento</p>
+                    <button class="add-to-cart" data-product-id="4" data-product-name="Producto1"
+                        data-product-price="90">Agregar al Carrito</button>
+                </div>
+                <div class="producto">
+                    <img src="../img/juguetes/producto5.jpg" alt="Producto1" />
+                    <h3>Producto5</h3>
+                    <p>Comodidad y rendimiento</p>
+                    <button class="add-to-cart" data-product-id="4" data-product-name="Producto1"
+                        data-product-price="90">Agregar al Carrito</button>
+                </div>
+
                 <!-- Más productos aquí -->
             </div>
         </section>
     </main>
     <footer>
-        <p>&copy; 2025 Fantasyglam. Todos los derechos reservados.</p>
+        <p>&copy; 2025 Luxuriette. Todos los derechos reservados.</p>
     </footer>
 
     <!-- Carrito Modal -->
@@ -49,7 +77,8 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="../script.js"></script>
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
 </body>
 
 </html>
