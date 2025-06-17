@@ -177,3 +177,10 @@ footer {
 .dropdown-menu li a:hover {
   background-color: #FF2D95;
 }
+/* Imagenes Tamaño fijo */
+.producto img {
+    width: 200px;       /* o el tamaño que prefieras */
+    height: 200px;
+    object-fit: cover;  /* recorta la imagen para que llene el espacio sin deformarse */
+    border-radius: 5px;
+}

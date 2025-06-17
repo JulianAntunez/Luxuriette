@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fantasyglam - Ropa Deportiva</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <header>
+        <div class="logo">Fantasyglam</div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Inicio</a></li>
+
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="productos-destacados">
+            <h2>Ropa Deportiva</h2>
+            <div class="productos">
+                <div class="producto">
+                    <img src="img/producto1.jpg" alt="Producto 1" />
+                    <h3>Remera Dry Fit</h3>
+                    <p>Ligera y transpirable</p>
+                    <button class="add-to-cart" data-product-id="1" data-product-name="Remera Dry Fit"
+                        data-product-price="45">Agregar al Carrito</button>
+                </div>
+                <!-- Más productos aquí -->
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Fantasyglam. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Carrito Modal -->
+    <div id="cart-modal" class="cart-modal">
+        <div class="cart-modal-content">
+            <span class="close">&times;</span>
+            <h2>Carrito de Compras</h2>
+            <ul id="cart-items"></ul>
+            <p>Total: $<span id="cart-total">0</span></p>
+            <button id="checkout-button">Checkout</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
