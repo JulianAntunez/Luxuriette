@@ -12,10 +12,19 @@
     <header>
         <div class="logo">Luxuriette</div>
         <nav>
+            <nav>
             <ul>
                 <li><a href="../index.html">Inicio</a></li>
-
+                <li class="dropdown">
+                    <a href="#">Catálogo ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="./lingerie.html">Lingerie</a></li>
+                        <li><a href="./juguetes.html">Juguetes</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" id="cart-button">Carrito (<span id="cart-count">0</span>)</a></li>
             </ul>
+        </nav>
         </nav>
     </header>
     <main>
@@ -54,7 +63,12 @@
             </div>
         </section>
     </main>
-    <!-- Carrito Modal -->
+    
+    <footer>
+        <p>&copy; 2025 Luxuriette. Todos los derechos reservados.</p>
+    </footer>
+
+        <!-- Carrito Modal -->
     <div id="cart-modal" class="cart-modal">
         <div class="cart-modal-content">
             <span class="close">&times;</span>
@@ -65,12 +79,8 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
-    <footer>
-        <p>&copy; 2025 Luxuriette. Todos los derechos reservados.</p>
-    </footer>
-
-    
+    <script src="../script.js"></script>
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
 </body>
 
 </html>
