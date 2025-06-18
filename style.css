@@ -98,7 +98,7 @@ body {
 }
 
 header {
-    background-color: #ff4081;
+    background-color: #1b0e12;
     color: white;
     padding: 15px;
     display: flex;
@@ -279,3 +279,26 @@ footer {
 }
 
 /* Imagenes Tamaño fijo */
+.logo{
+    height: 40px;
+    width: 40px;
+}
+.banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90px; /* Ocupa toda la pantalla */
+    text-align: center;
+}
+
+.logo-ban img {
+    max-width: 100px; /* Ajusta el tamaño del logo */
+    height: auto;
+}
+
+p.logo-ban {
+    margin-top: 10px; /* Espacio entre el logo y el texto */
+    font-size: 20px;
+    font-weight: bold;
+}
