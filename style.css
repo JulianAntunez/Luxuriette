@@ -40,11 +40,38 @@ nav ul li a {
 }
 
 .banner {
+    display: flex;
+    align-items: center; /* Centrar verticalmente */
+    justify-content: space-between; /* Espacio entre elementos */
+    padding: 20px;
+}
+
+.banner img {
+    width: 150px; /* Ajusta el tamaño según necesidad */
+    height: auto;
+}
+
+.banner h1, .banner p {
+    margin-left: 20px; /* Espaciado entre imagen y texto */
+}
+
+.banner {
     background-color: #2b141f;
     color: #FFFFFF;
     text-align: center;
     padding: 50px 20px;
 }
+
+.carro{
+
+  width: 500px;
+  height: 300px;
+  overflow: hidden; /* Oculta cualquier parte de la imagen que sobresalga */
+  position:relative;
+  
+}
+
+
 
 /* Productos  */
 
@@ -137,9 +164,10 @@ footer {
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: #333;
+    background-color: #33333373;
     color: #FFFFFF;
     text-align: center;
+
 
 }
 
