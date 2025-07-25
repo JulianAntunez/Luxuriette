@@ -1,0 +1,31 @@
+{
+  "name": "fangla",
+  "version": "1.0.0",
+  "description": "web store",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JulianAntunez/Luxuriette.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JulianAntunez/Luxuriette/issues"
+  },
+  "homepage": "https://github.com/JulianAntunez/Luxuriette#readme",
+  "dependencies": {
+    "@google-cloud/local-auth": "^3.0.1",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "googleapis": "^153.0.0",
+    "helmet": "^8.1.0",
+    "joi": "^17.13.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

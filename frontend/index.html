@@ -4,12 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
     <title>Fantasyglam - Ropa Deportiva</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <div class="logo">Fantasyglam</div>
+        <div class="logo">Fantam</div>
         <nav>
             <ul>
                 <li><a href="#">Inicio</a></li>
@@ -20,7 +21,8 @@
                         <li><a href="./pages/juguetes.html">Juguetes</a></li>
                     </ul>
                 </li>
-                <li><a href="#" id="cart-button">Carrito (<span id="cart-count">0</span>)</a></li>
+                <!-- <li><a href="#" id="cart-button">Carrito (<span id="cart-count">0</span>)</a></li> -->
+                 <li><a href="#"><button id="checkout" class="button-checkout" onclick="pay()">Pagar</button></a></li>
             </ul>
         </nav>
     </header>
@@ -32,31 +34,14 @@
         </section>
 
         <section class="productos-d2">
-            <div class="productos">
-                <div class="producto">
-                    <img src="img/producto1.jpg" alt="Producto 1">
-                    <h3>Producto 1</h3>
-                    <p>Descripción del producto 1</p>
-                    <button class="add-to-cart" data-product-id="1" data-product-name="Producto 1" data-product-price="50">Agregar al Carrito</button>
-                </div>
-                <div class="producto">
-                    <img src="img/producto2.jpg" alt="Producto 2">
-                    <h3>Producto 2</h3>
-                    <p>Descripción del producto 2</p>
-                    <button class="add-to-cart" data-product-id="2" data-product-name="Producto 2" data-product-price="70">Agregar al Carrito</button>
-                </div>
-                <div class="producto">
-                    <img src="img/producto3.jpg" alt="Producto 3">
-                    <h3>Producto 3</h3>
-                    <p>Descripción del producto 3</p>
-                    <button class="add-to-cart" data-product-id="3" data-product-name="Producto 3" data-product-price="30">Agregar al Carrito</button>
-                </div>
+            <div id="page-content" class="productos">
+            <!-- tra de script.js -->
             </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2023 Fantasyglam. Todos los derechos reservados.</p>
+        <p>&copy; 2025 JyO Solutions. Todos los derechos reservados.</p>
     </footer>
 
    <!-- Carrito Modal -->
@@ -66,7 +51,7 @@
             <h2>Carrito de Compras</h2>
             <ul id="cart-items"></ul>
             <p>Total: $<span id="cart-total">0</span></p>
-            <button id="checkout-button">Checkout</button>
+            <button id="checkout-button">Pagar</button>
         </div>
     </div>
 
