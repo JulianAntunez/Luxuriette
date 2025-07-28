@@ -13,15 +13,6 @@ app.use(bodyParser.json());
 
 
 // Define a basic route
-
-app.get('/api/products', async (req, res) => {
-    try {
-        res.send(await repository.read());
-    } catch (error) {
-        res.status(500).send({ error: 'Error al obtener los productos' });
-    }
-});
-
 app.post("/api/pay", async (req, res) => {
     const ids = req.body;
     const productsCopy = products.map(p => ({...p}));
@@ -40,7 +31,29 @@ app.post("/api/pay", async (req, res) => {
     res.send(products);
 });
 
+app.get('/api/products', async (req, res) => {
+    try {
+        const sheetName = req.query.sheetName || "Products";
+        const range = req.query.range || "A:F"; // Rango por defecto
+        const products = await repository.read(sheetName, range);
+     res.send(products);
+    console.log("Productos enviados al cliente:", products);
+  } catch (error) {
+    res.status(500).send({ error: 'Error al obtener los productos' });
+  }
+});
 
+app.get('/api/juguetes', async (req, res) => {
+    try {
+        const sheetName = req.query.sheetName || "Juguetes";
+        const range = req.query.range || "A:F"; // Rango por defecto
+        const products = await repository.read(sheetName, range);
+     res.send(products);
+    console.log("Productos enviados al cliente:", products);
+    } catch (error) {
+        res.status(500).send({ error: 'Error al obtener los productos' });
+    }
+});
 // Endpoint extendido para pagar
 // app.post("/api/pay", async (req, res) => {
 //     const ids = req.body;
@@ -76,6 +89,7 @@ app.use("/", express.static("frontend"));
 
 // Start the server
 app.listen(PORT, () => {
-    // console.log(`Server is running on http://localhost:${PORT} *-*--/--*-*`);
-    console.log(`Server On-Line Port: ${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT} *-*--/--*-*`);
+    // console.log(`Server On-Line Port: ${PORT}`);
 });
+exports = app; // Export the app for testing or further use

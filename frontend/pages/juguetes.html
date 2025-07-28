@@ -1,75 +1,58 @@
-<!DOCTYPE html>
+git <!DOCTYPE html>
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Luxuriette - Juguetes</title>
-    <link rel="stylesheet" href="../style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="../img/producto1.jpg">
+    <title>Fantasyglam - Ropa Deportiva</title>
+    <link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
     <header>
-        <div class="logo">Luxuriette</div>
+        <div class="logo">Fantam</div>
         <nav>
             <ul>
-                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="#">Inicio</a></li>
                 <li class="dropdown">
                     <a href="#">Catálogo ▾</a>
                     <ul class="dropdown-menu">
-                        <li><a href="./lingerie.html">Lingerie</a></li>
-                        <li><a href="./juguetes.html">Juguetes</a></li>
+                        <li><a href="../pages/lingerie.html">Lingerie</a></li>
+                        <li><a href="../pages/juguetes.html">Juguetes</a></li>
                     </ul>
                 </li>
-                <li><a href="#" id="cart-button">Carrito (<span id="cart-count">0</span>)</a></li>
+                <!-- <li><a href="#" id="cart-button">Carrito (<span id="cart-count">0</span>)</a></li> -->
+                 <li><a href="#"><button id="checkout" class="button-checkout" onclick="pay()">Pagar</button></a></li>
             </ul>
         </nav>
     </header>
-    <main>
-        <section class="productos-destacados">
-            <h2>Fantasia</h2>
-            <div class="productos">
-                <div class="producto">
-                    <img src="../img/juguetes/producto1.jpg" alt="Producto1" />
-                    <h3>Producto1</h3>
-                    <p>Comodidad y rendimiento</p>
-                    <button class="add-to-cart" data-product-id="4" data-product-name="Producto1" data-product-price="90">Agregar al Carrito</button>
-                </div>
-                <div class="producto">
-                    <img src="../img/juguetes/producto2.jpg" alt="Producto1" />
-                    <h3>Producto2</h3>
-                    <p>Comodidad y rendimiento</p>
-                    <button class="add-to-cart" data-product-id="4" data-product-name="Producto1"
-                        data-product-price="90">Agregar al Carrito</button>
-                </div>
-                <div class="producto">
-                    <img src="../img/juguetes/producto3.jpg" alt="Producto1" />
-                    <h3>Producto3</h3>
-                    <p>Comodidad y rendimiento</p>
-                    <button class="add-to-cart" data-product-id="4" data-product-name="Producto1"
-                        data-product-price="90">Agregar al Carrito</button>
-                </div>
-                <div class="producto">
-                    <img src="../img/juguetes/producto4.jpg" alt="Producto1" />
-                    <h3>Producto4</h3>
-                    <p>Comodidad y rendimiento</p>
-                    <button class="add-to-cart" data-product-id="4" data-product-name="Producto1"
-                        data-product-price="90">Agregar al Carrito</button>
-                </div>
-                <div class="producto">
-                    <img src="../img/juguetes/producto5.jpg" alt="Producto1" />
-                    <h3>Producto5</h3>
-                    <p>Comodidad y rendimiento</p>
-                    <button class="add-to-cart" data-product-id="4" data-product-name="Producto1"
-                        data-product-price="90">Agregar al Carrito</button>
-                </div>
 
-                <!-- Más productos aquí -->
-            </div>
+    <main>
+        <section class="banner">
+            <p class="logo-ban" >
+                <img class="logo-ban" src="./img/logo/logoLuxu.png" alt="">
+                Explora, experimenta, enciende la pasión.
+            </p>
         </section>
+
+        <section class="productos-d2">
+            <div id="page-content" class="productos">
+            <!-- tra de script.js -->
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
     </main>
+
     <footer>
-        <p>&copy; 2025 Luxuriette. Todos los derechos reservados.</p>
+        <p>&copy; 2025 JyO Solutions. Todos los derechos reservados.</p>
     </footer>
 
     <!-- Carrito Modal -->
@@ -79,12 +62,23 @@
             <h2>Carrito de Compras</h2>
             <ul id="cart-items"></ul>
             <p>Total: $<span id="cart-total">0</span></p>
-            <button id="checkout-button">Checkout</button>
+            <button id="checkout-button">Pagar</button>
         </div>
     </div>
 
     <script src="../script.js"></script>
     <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+
 </body>
 
 </html>

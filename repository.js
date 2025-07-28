@@ -5,25 +5,32 @@ require('dotenv').config({ override: false});
 // Inicializa el cliente de Google Sheets
 const sheets = google.sheets('v4');
 
-const spreadsheetId = process.env.SPREAD_SHEET_ID;
-const range = "Hoja 3!A:F"; // Asegúrate de que no haya espacios
-
-// Autenticación utilizando el archivo JSON de claves de servicio
 const auth = new google.auth.GoogleAuth({
   keyFile: 'tiendaweb-466218-37373c242486.json', // Ruta al archivo JSON en la raíz del proyecto
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 
-async function read() {
+const spreadsheetId = process.env.SPREAD_SHEET_ID;
+const range = "Products!A:F"; // Asegúrate de que no haya espacios
+
+// Autenticación utilizando el archivo JSON de claves de servicio
+
+
+async function read(sheetName = "Products", range = "A:F") {
   try {
+    const dynamicRange = `${sheetName}!${range}`;
     // Obtén el cliente autenticado
     const authClient = await auth.getClient();
     
     // Establece el cliente de autenticación en la API
-    const resultRead = await sheets.spreadsheets.values.get({
+     const resultRead = await sheets.spreadsheets.values.get({
       spreadsheetId: spreadsheetId,
-      range: range,
+      range: dynamicRange,
       auth: authClient,
+    // const resultRead = await sheets.spreadsheets.values.get({
+    //   spreadsheetId: spreadsheetId,
+    //   range: range,
+    //   auth: authClient,
     });
 
     // console.log("Datos leídos:", resultRead.data.values);
@@ -42,7 +49,7 @@ async function read() {
       Stock: parseInt(row[4]),
     Imagen: row[5],
     }));
-    // console.log("Productos leídos:", products);
+    //  console.log("Productos leídos:", products);
     return products;
   } catch (error) {
     console.error(`Error en lectura: ${error.message}`);
@@ -51,7 +58,6 @@ async function read() {
 }
 
 // Llama a la función read si es necesario
-
 
 
 async function write(products) {

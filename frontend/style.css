@@ -291,7 +291,6 @@ footer {
     background-color: #FF2D95;
 }
 
-<<<<<<< HEAD:frontend/style.css
 .button-add.disabled {
     background-color: white;
     color: black;
@@ -306,8 +305,6 @@ footer {
     color: white;
 }
 
-=======
->>>>>>> fc409e6b5aa19277bd198fe59d5a38a8c8212c3e:style.css
 /* Imagenes Tamaño fijo */
 .logo{
     height: 40px;
