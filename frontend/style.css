@@ -3,8 +3,12 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* PAra que no duela la vista. sacar */
+    background-color: #1C1C1C;
 }
-
+h2 {
+    color: rebeccapurple;
+}
 header {
     background-color: #1C1C1C;
     color: #FFFFFF;
@@ -36,19 +40,44 @@ nav ul li a {
 }
 
 .banner {
+    display: flex;
+    align-items: center; /* Centrar verticalmente */
+    justify-content: space-between; /* Espacio entre elementos */
+    padding: 20px;
+}
+
+.banner img {
+    width: 150px; /* Ajusta el tamaño según necesidad */
+    height: auto;
+}
+
+.banner h1, .banner p {
+    margin-left: 20px; /* Espaciado entre imagen y texto */
+}
+
+.banner {
     background-color: #2b141f;
     color: #FFFFFF;
     text-align: center;
     padding: 50px 20px;
 }
 
-.productos-destacados {
-    padding: 20px;
-    text-align: center;
+.carro{
+
+  width: 500px;
+  height: 300px;
+  overflow: hidden; /* Oculta cualquier parte de la imagen que sobresalga */
+  position:relative;
+  
 }
+
+
+
+/* Productos  */
 
 .productos {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
 }
@@ -60,9 +89,74 @@ nav ul li a {
     width: 200px;
 }
 
-.producto img {
-    max-width: 100%;
-    border-radius: 5px;
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+header {
+    background-color: #1b0e12;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.productos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.producto {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    width: 250px;
+}
+
+img {
+    width: 90%;
+    height: 200px;
+}
+
+button {
+    background-color: #ff4081;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Responsividad para móviles */
+
+@media (max-width: 600px) {
+    .productos {
+        flex-direction: column;
+    }
+}
+@media (max-width: 375px) {
+    .productos {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+      .productos {
+        gap: 10px; /* Even less gap */
+        padding: 10px; /* Less padding around the grid */
+    }
+
+    .producto {
+        width: calc(50% - 15px); /* Changed to allow two products per row with a gap */
+        margin: 5px auto; /* Center individual products with small vertical margin */
+    }
+
 }
 .producto div{
     /* display: flex; */
@@ -79,10 +173,15 @@ nav ul li a {
     }
 
 footer {
-    background-color: #1C1C1C;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #33333373;
     color: #FFFFFF;
     text-align: center;
-    padding: 10px 0;
+
+
 }
 
 /* === Estilos del carrito de compras === */
@@ -107,7 +206,7 @@ footer {
     width: 90%;
     max-width: 500px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
 }
 
@@ -155,42 +254,44 @@ footer {
     color: black;
     text-decoration: none;
 }
+
 /* Menú desplegable */
 .dropdown {
-  position: relative;
+    position: relative;
 }
 
 .dropdown-menu {
-  display: none;
-  position: absolute;
-  background-color: #1C1C1C;
-  padding: 10px 0;
-  list-style: none;
-  margin: 0;
-  top: 100%;
-  left: 0;
-  min-width: 180px;
-  z-index: 1000;
+    display: none;
+    position: absolute;
+    background-color: #1C1C1C;
+    padding: 10px 0;
+    list-style: none;
+    margin: 0;
+    top: 100%;
+    left: 0;
+    min-width: 180px;
+    z-index: 1000;
 }
 
 .dropdown-menu li {
-  padding: 8px 20px;
+    padding: 8px 20px;
 }
 
 .dropdown-menu li a {
-  color: #FFFFFF;
-  text-decoration: none;
-  display: block;
+    color: #FFFFFF;
+    text-decoration: none;
+    display: block;
 }
 
 .dropdown:hover .dropdown-menu {
-  display: block;
+    display: block;
 }
 
 .dropdown-menu li a:hover {
-  background-color: #FF2D95;
+    background-color: #FF2D95;
 }
 
+<<<<<<< HEAD:frontend/style.css
 .button-add.disabled {
     background-color: white;
     color: black;
@@ -205,10 +306,29 @@ footer {
     color: white;
 }
 
+=======
+>>>>>>> fc409e6b5aa19277bd198fe59d5a38a8c8212c3e:style.css
 /* Imagenes Tamaño fijo */
-.producto img {
-    width: 200px;       /* o el tamaño que prefieras */
-    height: 200px;
-    object-fit: cover;  /* recorta la imagen para que llene el espacio sin deformarse */
-    border-radius: 5px;
+.logo{
+    height: 40px;
+    width: 40px;
+}
+.banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90px; /* Ocupa toda la pantalla */
+    text-align: center;
+}
+
+.logo-ban img {
+    max-width: 100px; /* Ajusta el tamaño del logo */
+    height: auto;
+}
+
+p.logo-ban {
+    margin-top: 10px; /* Espacio entre el logo y el texto */
+    font-size: 20px;
+    font-weight: bold;
 }
