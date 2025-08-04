@@ -19,12 +19,12 @@ app.post("/api/pay", async (req, res) => {
 
     ids.forEach(id => {
         const product =  productsCopy.find(p => p.id === id)
-        if (product.stock > 0) {
-            product.stock --; 
-        }
-        else{
-            throw "Sin Stock";
-        };
+        Copiar
+if (product.stock > 0) {
+    product.stock--; 
+} else {
+    return res.status(400).send("Sin Stock");
+}
         
     });
     products =  productsCopy;
@@ -33,27 +33,55 @@ app.post("/api/pay", async (req, res) => {
 
 app.get('/api/products', async (req, res) => {
     try {
-        const sheetName = req.query.sheetName || "Products";
+        const sheetName = req.query.sheetName || "Productos";
         const range = req.query.range || "A:F"; // Rango por defecto
-        const products = await repository.read(sheetName, range);
-     res.send(products);
-    console.log("Productos enviados al cliente:", products);
+        // const products = await repository.read(sheetName, range);
+     res.send(await repository.read(sheetName, range));
+    // console.log("Cargo Products:", productList);
   } catch (error) {
     res.status(500).send({ error: 'Error al obtener los productos' });
   }
 });
 
+// Ruta API para obtener juguetes
 app.get('/api/juguetes', async (req, res) => {
     try {
         const sheetName = req.query.sheetName || "Juguetes";
         const range = req.query.range || "A:F"; // Rango por defecto
-        const products = await repository.read(sheetName, range);
-     res.send(products);
-    console.log("Productos enviados al cliente:", products);
+        // const products = await repository.read(sheetName, range);
+        
+        // console.log("Juguetes enviados al cliente:", products); // Mover aquí el log
+        res.send(await repository.read(sheetName, range));
     } catch (error) {
-        res.status(500).send({ error: 'Error al obtener los productos' });
+        console.error(error); // Log del error para depuración
+        res.status(500).send({ error: 'Error al obtener los Juguetes' });
     }
 });
+
+// app.get('/api/juguetes', async (req, res) => {
+//     try {
+//         const sheetName = req.query.sheetName || "Juguetes";
+//         const range = req.query.range || "A:H"; // Rango por defecto
+//         const products = await repository.read(sheetName, range);
+//      res.send(products);
+//     console.log("Juguetes enviados al cliente:", products);
+//     } catch (error) {
+//         res.status(500).send({ error: 'Error al obtener los Juguetes' });
+//     }
+// });
+// Define another route
+app.get('/api', (req, res) => {
+    res.json({ message: 'Hello from the API!' });
+});
+
+app.use("/", express.static("frontend"));
+
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT} *-*--/--*-*`);
+    // console.log(`Server On-Line Port: ${PORT}`);
+});
+exports = app; 
 // Endpoint extendido para pagar
 // app.post("/api/pay", async (req, res) => {
 //     const ids = req.body;
@@ -80,16 +108,16 @@ app.get('/api/juguetes', async (req, res) => {
 // });
 
 
-// Define another route
-app.get('/api', (req, res) => {
-    res.json({ message: 'Hello from the API!' });
-});
+// // // // Define another route
+// // // app.get('/api', (req, res) => {
+// // //     res.json({ message: 'Hello from the API!' });
+// // // });
 
-app.use("/", express.static("frontend"));
+// // // app.use("/", express.static("frontend"));
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT} *-*--/--*-*`);
-    // console.log(`Server On-Line Port: ${PORT}`);
-});
-exports = app; // Export the app for testing or further use
+// // // // Start the server
+// // // app.listen(PORT, () => {
+// // //     console.log(`Server is running on http://localhost:${PORT} *-*--/--*-*`);
+// // //     // console.log(`Server On-Line Port: ${PORT}`);
+// // // });
+// // // exports = app; // Export the app for testing or further use

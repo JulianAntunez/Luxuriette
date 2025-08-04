@@ -1,5 +1,5 @@
 const { google } = require('googleapis');
-require('dotenv').config({ override: false});
+require('dotenv').config({ override: false });
 
 
 // Inicializa el cliente de Google Sheets
@@ -11,7 +11,7 @@ const auth = new google.auth.GoogleAuth({
 });
 
 const spreadsheetId = process.env.SPREAD_SHEET_ID;
-const range = "Products!A:F"; // Asegúrate de que no haya espacios
+// const range = "Products!A:F"; // Asegúrate de que no haya espacios
 
 // Autenticación utilizando el archivo JSON de claves de servicio
 
@@ -21,20 +21,20 @@ async function read(sheetName = "Products", range = "A:F") {
     const dynamicRange = `${sheetName}!${range}`;
     // Obtén el cliente autenticado
     const authClient = await auth.getClient();
-    
+
     // Establece el cliente de autenticación en la API
-     const resultRead = await sheets.spreadsheets.values.get({
+    const resultRead = await sheets.spreadsheets.values.get({
       spreadsheetId: spreadsheetId,
       range: dynamicRange,
       auth: authClient,
-    // const resultRead = await sheets.spreadsheets.values.get({
-    //   spreadsheetId: spreadsheetId,
-    //   range: range,
-    //   auth: authClient,
+      // const resultRead = await sheets.spreadsheets.values.get({
+      //   spreadsheetId: spreadsheetId,
+      //   range: range,
+      //   auth: authClient,
     });
 
     // console.log("Datos leídos:", resultRead.data.values);
-    
+
     // Asegúrate de que hay datos antes de intentar procesarlos
     if (!resultRead.data.values || resultRead.data.values.length === 0) {
       console.log('No se encontraron datos en la hoja.');
@@ -47,7 +47,9 @@ async function read(sheetName = "Products", range = "A:F") {
       Descripcion: row[2],
       Precio: +row[3],
       Stock: parseInt(row[4]),
-    Imagen: row[5],
+      Img1: row[5],
+      // Img2: row[6],
+      // Img3: row[7],
     }));
     //  console.log("Productos leídos:", products);
     return products;
@@ -62,39 +64,39 @@ async function read(sheetName = "Products", range = "A:F") {
 
 async function write(products) {
 
-//   try {
-//     // Mapeo de productos a formato adecuado para Google Sheets
-//     const values = products.map(p => [
-//       p.ID, // Mantener el ID original
-//       p.Producto,
-//       p.Precio,
-//       p.Stock
-//     ]);
+  //   try {
+  //     // Mapeo de productos a formato adecuado para Google Sheets
+  //     const values = products.map(p => [
+  //       p.ID, // Mantener el ID original
+  //       p.Producto,
+  //       p.Precio,
+  //       p.Stock
+  //     ]);
 
-//     // Definir el rango de escritura comenzando desde la fila 2 para no sobrescribir el encabezado
-//     const rangeForWrite = "Products!A2:D"; // Cambiar a A2 para no afectar el encabezado
+  //     // Definir el rango de escritura comenzando desde la fila 2 para no sobrescribir el encabezado
+  //     const rangeForWrite = "Products!A2:D"; // Cambiar a A2 para no afectar el encabezado
 
-//     // Definir opciones para la actualización
-//     const valueInputOption = 'RAW'; // O 'USER_ENTERED', según lo que necesites
+  //     // Definir opciones para la actualización
+  //     const valueInputOption = 'RAW'; // O 'USER_ENTERED', según lo que necesites
 
-//     // Llamada a la función de actualización
-//     const result = await googleSheets.write(spreadsheetId, rangeForWrite, values, valueInputOption);
+  //     // Llamada a la función de actualización
+  //     const result = await googleSheets.write(spreadsheetId, rangeForWrite, values, valueInputOption);
 
-//     // Validación de respuesta
-//     if (!result || !result.data.updatedCells) {
-//       throw new Error("No se actualizaron celdas en la hoja de cálculo");
-//     }
+  //     // Validación de respuesta
+  //     if (!result || !result.data.updatedCells) {
+  //       throw new Error("No se actualizaron celdas en la hoja de cálculo");
+  //     }
 
-//     return { success: true, updatedCells: result.data.updatedCells };
-//   } catch (error) {
-//     console.error(`Error en escritura: ${error.message}`);
-//     return { 
-//       success: false,
-//       error: error.message,
-//       stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
-//     };
-//   }
-// }
+  //     return { success: true, updatedCells: result.data.updatedCells };
+  //   } catch (error) {
+  //     console.error(`Error en escritura: ${error.message}`);
+  //     return { 
+  //       success: false,
+  //       error: error.message,
+  //       stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+  //     };
+  //   }
+  // }
 
 };
 
@@ -106,12 +108,12 @@ async function write(products) {
 //     // products[1].stock = 30;
 //     // products[0].stock = 25;
 //     await write(products);
-    
+
 // }
 
 // readAndWrite();
-read();
+// read();
 module.exports = {
-    read,
-    write,
+  read,
+  write,
 }

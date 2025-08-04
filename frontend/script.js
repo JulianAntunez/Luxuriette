@@ -1,14 +1,36 @@
 let total = 0;
 let carrito = [];
 let productList = [];
+let productListJuguetes = [];
 
 async function fetchProducts() {
     productList = await (await fetch("/api/products")).json();
-    displayProducts()
+    displayProducts(productList)
+}
+
+async function fetchJuguetes() {
+    productListJuguetes = await (await fetch("/api/juguetes")).json();  
+    displayProducts(productListJuguetes)
+}
+
+
+// Carga de carrito de compras
+ function add(productId, price) {
+    console.log(`Agregando producto con ID: ${productId} y precio: $${price}`);
+    // const product = productList.find(p => p.ID === productId); // Cambiado a ID para que coincida
+    // if (product && product.stock > 0) {
+    //     product.stock--;
+    //     carrito.push(productId);
+    //     total += price;
+    //     document.getElementById("checkout").innerHTML = `Pagar $${total.toFixed(2)}`;
+    //     displayProducts();
+    // } else {
+    //     window.alert("Producto fuera de stock");
+    // }
 }
 
 // Modificar la función displayProductos para mostrar disponibilidad
-function displayProducts() {
+function displayProducts(productList) {
     let productsHTML = '';
     productList.forEach(p => {
         // Determina si el producto está disponible
@@ -35,42 +57,45 @@ function displayProducts() {
 }
 
 
-function add(productId, price) {
-    const product = productList.find(p => p.id === productId);
-    product.stock--;
-
-    console.log(productId.price);
-    carrito.push(productId);
-    total = total + price;
-    document.getElementById("checkout").innerHTML = `Pagar $${total}`;
-    displayProducts();
-}
-
-async function pay() {
-    try {
-        const productList = await (await fetch("/api/pay", {
-        method: "post",
-        body: JSON.stringify(carrito),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })).json();
-        
-    } catch  {
-        window.alert("Sin Stock");
-        
-    }
-    total = 0;
-        carrito = [];
-    await fetchProducts
-    document.getElementById("checkout").innerHTML = `Pagar $${total}`;
-
-}
-
 // Inicialización
 window.onload = async () => {
-    await fetchProducts();
-    productList = await (await fetch("/api/products")).json();
+     await fetchProducts(productList);
+    // const path = window.location.pathname;
 
-    displayProducts()
+    // // Cargar productos o juguetes según la página
+    // if (path.includes("juguetes.html")) {
+    //     await fetchJuguetes();
+    // } else {
+       
+    // }
 }
+
+
+
+// async function pay() {
+//     try {
+//         const response = await fetch("/api/pay", {
+//             method: "POST",
+//             body: JSON.stringify(carrito),
+//             headers: {
+//                 "Content-Type": "application/json"
+//             }
+//         });
+
+//         if (!response.ok) {
+//             throw new Error("Error en el pago");
+//         }
+
+//         const productList = await response.json();
+//         // Aquí puedes manejar la respuesta del servidor si es necesario
+//     } catch (error) {
+//         window.alert("Sin Stock");
+//     } finally {
+//         total = 0;
+//         carrito = [];
+//         await fetchProducts(); // Asegúrate de invocar correctamente la función
+//         document.getElementById("checkout").innerHTML = `Pagar $${total.toFixed(2)}`;
+//     }
+// }
+
+
