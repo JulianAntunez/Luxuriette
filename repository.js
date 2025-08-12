@@ -16,7 +16,7 @@ const spreadsheetId = process.env.SPREAD_SHEET_ID;
 // Autenticación utilizando el archivo JSON de claves de servicio
 
 
-async function read(sheetName = "Products", range = "A:F") {
+async function read(sheetName = "Productos", range = "A:F") {
   try {
     const dynamicRange = `${sheetName}!${range}`;
     // Obtén el cliente autenticado
@@ -33,7 +33,7 @@ async function read(sheetName = "Products", range = "A:F") {
       //   auth: authClient,
     });
 
-    // console.log("Datos leídos:", resultRead.data.values);
+     //console.log("Datos leídos:", resultRead.data.values);
 
     // Asegúrate de que hay datos antes de intentar procesarlos
     if (!resultRead.data.values || resultRead.data.values.length === 0) {
@@ -42,7 +42,7 @@ async function read(sheetName = "Products", range = "A:F") {
     }
 
     const products = resultRead.data.values.slice(1).map((row) => ({
-      ID: parseInt(row[0]),
+      Id: parseInt(row[0]),
       Producto: row[1],
       Descripcion: row[2],
       Precio: +row[3],
@@ -51,7 +51,7 @@ async function read(sheetName = "Products", range = "A:F") {
       // Img2: row[6],
       // Img3: row[7],
     }));
-    //  console.log("Productos leídos:", products);
+    // console.log("Productos leídos:", products);
     return products;
   } catch (error) {
     console.error(`Error en lectura: ${error.message}`);

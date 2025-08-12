@@ -11,7 +11,7 @@ button {
     font-size: 16px;
     text-align: center;
     border-radius: 5px;
-    padding: 10px 25px;
+    padding: 12px 29px;
 }
 
 
@@ -68,20 +68,7 @@ button {
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
-.button-add-disabled {
-    background-color: #808080;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    opacity: 0.6;
-    cursor: not-allowed;
-}
+
 
 .product-container img {
     width: 250px;
@@ -114,4 +101,14 @@ button {
 .button-add:hover {
     background-color: #1f3b20;
     color: whitesmoke;
+}
+.button-add-disabled {
+    background-color: #1a1919;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    opacity: 0.6;
+    cursor: not-allowed;
 }

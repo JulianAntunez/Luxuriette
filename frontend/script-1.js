@@ -3,36 +3,28 @@ let carrito = [];
 let total = 0;
 
 
-function add(Id, Precio) {
-   // Busca el producto por su ID
-    const product = productList.find(p => p.Id === Id);
-    
-    // Verifica si el producto existe
-    if (!product) {
-        console.error(`Producto con ID ${Id} no encontrado`);
-        return; // Salir de la función si el producto no existe
-    }
-    
-    // Verifica si hay stock disponible
-    if (product.Stock <= 0) {
-        console.error(`No hay stock para el producto con ID ${Id}`);
-        return; // Salir si no hay stock
-    }
-    
-    // Decrementa el stock y agrega el producto al carrito
-    product.Stock--;
-    carrito.push(Id);
-    total += Precio;
-    
-    // Actualiza el total en el HTML
+function add(productId, price) {
+const product = productList.find(p => p.id === productId);
+            product.stock--;
+
+    console.log(productId, price);
+    carrito.push(productId);
+    total += price;
     document.getElementById("checkout").innerHTML = " $ " + total;
-    
-    // Muestra los productos actualizados
     displayProducts();
 }
 
+
 async function pay() {
     try {
+        // productList = await (await fetch("/api/pay", {
+        //     method: 'post',
+        //     body: JSON.stringify(carrito),
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        // })).json();
+             // Realizar la solicitud POST al servidor
         const response = await fetch("/api/pay", {
             method: 'post',
             body: JSON.stringify(carrito),
@@ -56,42 +48,44 @@ async function pay() {
         // Actualizar la lista de productos en la interfaz
         await fetchProducts();
         document.getElementById("checkout").innerHTML = "Carrito";
+
     }
-    catch (error) {
+    catch(error) {
         // Manejar errores
         console.error("Error al procesar el pago:", error);
-        window.alert("No hay Stock");
+        window.alert("No hay stock");
     }
 
     carrito = [];
     total = 0;
     await fetchProducts();
+    // window.alert(products.join(", \n"));
 }
 
 function displayProducts() {
     let productsHTML = '';
     productList.forEach(p => {
-        let buttonHTML = `<button class="button-add" onclick="add(${p.Id}, ${p.Precio})">Agregar</button>`;
+        let buttonHTML = `<button class="button-add" onclick="add(${p.id}, ${p.price})">Agregar</button>`;
 
-        if (p.Stock <= 0) {
-            buttonHTML = `<button disabled class="button-add-disabled" onclick="add(${p.Id}, ${p.Precio})">Sin Stock</button>`;
+        if (p.stock <= 0) {
+            buttonHTML = `<button disabled class="button-add-disabled" onclick="add(${p.id}, ${p.price})">Sin Stock</button>`;
         };
         productsHTML +=
             `<div class="product-container">
-            <h3>${p.Producto}</h3>
-            <img src="${p.Img1}" alt="">
-            <h1>$ ${p.Precio}</h1>
+            <h3>${p.name}</h3>
+            <img src="${p.image}" alt="">
+            <h1>$ ${p.price}</h1>
             ${buttonHTML}
         </div>`
     });
-    // console.log(productsHTML);
     document.getElementById("page-content").innerHTML = productsHTML;
 }
 
 async function fetchProducts() {
-    productList = await (await fetch("/api/products")).json();
-    displayProducts();
+    productList = await (await fetch("/api/products")).json(); 
+     displayProducts();
 }
+
 window.onload = async () => {
     await fetchProducts();
 }
