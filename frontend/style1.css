@@ -1,3 +1,11 @@
+/* Estilos generales del body */
+body {
+    background-color: #504848;
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    box-sizing: border-box;
+}
 
 /* Estilos de botones */
 button {
@@ -8,6 +16,15 @@ button {
 }
 
 /* Estilos de navegación de la página */
+.page-nav {
+    background-color: #4f3ac5;
+    border: 1px solid #000000;
+    position: relative;
+}
+
+.page-nav h1 {
+    margin: 20px;
+}
 
 /* Estilos del botón de checkout */
 .button-checkout {
@@ -59,7 +76,7 @@ button {
 
 /* Estilos para las tarjetas de producto */
 .product-container {
-    background-color: #3C3C3C;
+    background-color: #ffffff;
     border-radius: 10px;
     border-top: 4px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -68,7 +85,6 @@ button {
     flex-basis: calc(20% - 16px);
     margin: 8px;
     position: relative;
-    text-align: center;
     /* Asegúrate de que el contenedor tenga posición relativa */
 }
 
@@ -135,17 +151,20 @@ button {
 /* Estilos para los botones de añadir al carrito */
 .button-add,
 .button-add-disabled {
-
-    display: block; /* Permitir que el botón tenga un ancho definido */
-    padding: 10px 20px; /* Espaciado interno */
-    background-color: #28a745; /* Color de fondo */
-    color: white; /* Color del texto */
-    border: none; /* Sin borde */
-    border-radius: 5px; /* Bordes redondeados */
-    text-align: center; /* Centrar texto */
-    font-size: 16px; /* Tamaño de fuente */
-    width: 100%; /* Ancho fijo para centrar el texto */
-    cursor: pointer; /* Cambiar el cursor al pasar el mouse */
+    background-color: rgb(20, 223, 20);
+    border: none;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    position: absolute;
+    /* Posiciona el botón de forma absoluta */
+    bottom: 4px;
+    /* Ajusta según sea necesario */
+    right: 2px;
+    /* Ajusta según sea necesario */
+    transition: 0.4s;
 }
 
 .button-add:hover {
@@ -181,12 +200,6 @@ button {
     }
 }
 
-
-@media (max-width: 568px) {
-    .product-container {
-        flex-basis: calc(70% - 16px);
-    }
-}
 /* HEADER PRINCIPAL */
 .header {
     background-color: #ffffff;
@@ -200,7 +213,98 @@ button {
     align-items: center;
 }
 
+/* LOGO */
+.header__logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+}
 
+.header__logo span {
+    color: #ff6b6b;
+    /* Color de acento */
+}
+
+/* MENÚ DE NAVEGACIÓN */
+.header__nav {
+    display: flex;
+    gap: 2rem;
+}
+
+.header__nav-link {
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.header__nav-link:hover {
+    color: #ff6b6b;
+}
+
+.header__nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: #ff6b6b;
+    transition: width 0.3s ease;
+}
+
+.header__nav-link:hover::after {
+    width: 100%;
+}
+
+/* ICONOS (carrito, usuario, búsqueda) */
+.header__icons {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.header__icon {
+    font-size: 1.3rem;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.header__icon:hover {
+    color: #ff6b6b;
+}
+
+/* Contador del carrito */
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff6b6b;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilos del modal del carrito */
+.cart-header {
+    display: flex;
+    /* Usar flexbox para alinear los elementos en una fila */
+    justify-content: space-between;
+    /* Espacio entre el título y la "X" */
+    align-items: center;
+    /* Centrar verticalmente */
+    margin-bottom: 15px;
+    /* Espacio debajo del encabezado */
+}
 
 .close {
     margin: 4px 2px;
@@ -224,10 +328,9 @@ button {
     /* Ajusta para alinear con el icono del carrito */
     width: 300px;
     /* Ancho del modal */
-    background-color: rgb(46, 46, 46);
+    background-color: white;
     /* Color de fondo */
     border: 1px solid #ccc;
-    border-radius: 15px;
     /* Borde */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     /* Sombra */
@@ -300,18 +403,10 @@ span.close {
     text-align: center;
 }
 
-.descr h4 {
-    color: #ca1313;
-    margin: 0 0 0px;
-    /* Simplificado */
-    font-size: 1em;
-    font-weight: normal;
-}
-
 /* Estilos del botón de checkout */
 #checkout-button {
-    background: #1d1c1c;
-    border: 1px solid #aa4949;
+    background: #eee;
+    border: 1px solid #ccc;
     padding: 8px 12px;
     cursor: pointer;
     font-weight: bold;
@@ -358,6 +453,61 @@ span.close {
     transition: 0.3s;
 }
 
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .header {
+        padding: 1rem;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+
+    .header__nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: white;
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        display: none;
+    }
+
+    .header__nav.active {
+        display: flex;
+    }
+
+    .header__search {
+        margin-top: 1rem;
+        width: 100%;
+    }
+
+    .search-input {
+        width: 100%;
+    }
+}
+
+/* Estilos generales del footer */
+footer {
+    background-color: #333;
+    /* Color de fondo oscuro */
+    color: white;
+    /* Color del texto */
+    padding: 20px;
+    /* Espaciado interno */
+    text-align: center;
+    /* Centrar texto */
+}
+
+/* Estilos para el texto de derechos reservados */
+footer p {
+    margin: 10px 0;
+    /* Margen superior e inferior */
+    font-size: 14px;
+    /* Tamaño de fuente */
+}
 
 /* Estilos para la lista de redes sociales */
 .social-media {
@@ -375,5 +525,60 @@ span.close {
     /* Espacio entre íconos */
 }
 
+/* Estilos para los enlaces de redes sociales */
+.social-media li {
+    display: inline;
+    /* Mostrar como inline */
+}
 
+.social-media a {
+    color: white;
+    /* Color de los íconos */
+    font-size: 24px;
+    /* Tamaño de los íconos */
+    transition: color 0.3s;
+    /* Transición suave para el color */
+}
 
+.social-media a:hover {
+    color: #ff6b6b;
+    /* Color al pasar el mouse */
+}
+
+/* Estilos para la navegación */
+nav {
+    margin-top: 15px;
+    /* Margen superior */
+}
+
+nav a {
+    color: white;
+    /* Color del texto de los enlaces */
+    text-decoration: none;
+    /* Sin subrayado */
+    margin: 0 10px;
+    /* Margen entre enlaces */
+}
+
+nav a:hover {
+    text-decoration: underline;
+    /* Subrayar al pasar el mouse */
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    footer {
+        padding: 15px;
+        /* Menos padding en pantallas pequeñas */
+    }
+
+    .social-media {
+        gap: 10px;
+        /* Menos espacio entre íconos en pantallas pequeñas */
+    }
+
+    nav a {
+        margin: 0 5px;
+        /* Menos margen entre enlaces */
+    }
+}
