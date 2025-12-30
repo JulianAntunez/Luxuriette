@@ -19,22 +19,34 @@ app.use('/frontend', express.static(path.join(__dirname, 'frontend')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// app.get('/api/products', async (req, res) => {
-//     const sheetName = req.query.sheet || "Productos"; // Usa "Productos" por defecto
-//     const products = await repository.read(sheetName); // Llama a read con el nombre de la hoja
-//     res.send(products);
-// });
 
-app.get('/api/products', async (req, res) => {
-  const sheetName = req.query.sheet || "Productos"; // Usa "Productos" por defecto
+
+app.get('/api/products/:type', async (req, res) => {
+  const type = req.params.type; // Obtiene el tipo de producto
   try {
-    const products = await repository.read(sheetName); // Asegúrate de que 'sheetName' sea "Productos"
-    res.send(products);
+    const products = await repository.read(); // Lee todos los productos
+    const filteredProducts = products.filter(product => product.Tipo === type); // Filtra por tipo
+    res.send(filteredProducts);
   } catch (error) {
     console.error('Error al obtener productos:', error);
     res.status(500).json({ error: 'Error al obtener productos' });
   }
 });
+
+
+
+
+
+// app.get('/api/products', async (req, res) => {
+//   const sheetName = req.query.sheet || "Productos"; // Usa "Productos" por defecto
+//   try {
+//     const products = await repository.read(sheetName); // Asegúrate de que 'sheetName' sea "Productos"
+//     res.send(products);
+//   } catch (error) {
+//     console.error('Error al obtener productos:', error);
+//     res.status(500).json({ error: 'Error al obtener productos' });
+//   }
+// });
 
 
 app.post('/api/pay', async (req, res) => {
@@ -48,8 +60,10 @@ app.post('/api/pay', async (req, res) => {
     // Normalizar IDs (acepta [1,2] o [{Id:1},{Id:2}])
     const cantidadPorProducto = {};
     carrito.forEach(item => {
-      const id = typeof item === 'object' && item.Id ? item.Id : item;
-      cantidadPorProducto[id] = (cantidadPorProducto[id] || 0) + 1;
+      // Si recibimos {id: 1, quantity: 2}, sumamos la cantidad directamente
+      const id = item.id;
+      const qty = item.quantity || 1;
+      cantidadPorProducto[id] = (cantidadPorProducto[id] || 0) + qty;
     });
 
     // Leer productos actuales
@@ -88,13 +102,16 @@ app.post('/api/pay', async (req, res) => {
     }
 
     res.status(200).json(productosActualizados);
-   } catch (error) {
+  } catch (error) {
     console.error('Error al procesar el pago:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
+
+
+
 app.use("/", express.static("frontend"));
 
 app.listen(port, () => {
-    console.log(`http://localhost:${port}`);
+  console.log(`http://localhost:${port}`);
 });

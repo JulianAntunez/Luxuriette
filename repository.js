@@ -45,7 +45,7 @@ async function read(sheetName = "Productos", range = "A:I") {
       Id: parseInt(row[0]),
       Producto: row[1],
       Descripcion: row[2],
-      Precio: parseFloat(row[3]),
+      Precio: parseFloat(String(row[3]).replace(/[^0-9.-]+/g, "")) || 0,
       Stock: parseInt(row[4]),
       Img1: row[5],
       Img2: row[6],
@@ -69,7 +69,7 @@ async function write(products) {
     // Limpiar rango antes de escribir
     await sheets.spreadsheets.values.clear({
       spreadsheetId,
-      range: "Productos!A2:F",
+      range: "Productos!A2:I",
       auth: authClient
     });
 
@@ -80,11 +80,20 @@ async function write(products) {
       p.Precio,
       p.Stock,
       p.Img1,
+      p.Img2 || "",
+      p.Img3 || "",
+      p.Tipo || ""
     ]);
+
+    await sheets.spreadsheets.values.clear({
+      spreadsheetId,
+      range: rangeWrite,
+      auth: authClient
+    });
 
     const result = await sheets.spreadsheets.values.update({
       spreadsheetId,
-      range: "Productos!A2:F",
+      range: rangeWrite,
       valueInputOption: 'RAW',
       resource: { values },
       auth: authClient,
