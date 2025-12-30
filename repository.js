@@ -16,7 +16,7 @@ const spreadsheetId = process.env.SPREAD_SHEET_ID;
 // Autenticación utilizando el archivo JSON de claves de servicio
 
 
-async function read(sheetName = "Productos", range = "A:H") {
+async function read(sheetName = "Productos", range = "A:I") {
   try {
     const dynamicRange = `${sheetName}!${range}`;
     // Obtén el cliente autenticado
@@ -50,6 +50,7 @@ async function read(sheetName = "Productos", range = "A:H") {
       Img1: row[5],
       Img2: row[6],
       Img3: row[7],
+      Tipo: row[8],
     }));
     // console.log("Productos leídos:", products);
     return products;
