@@ -33,7 +33,15 @@ app.get('/api/products/:type', async (req, res) => {
   }
 });
 
-
+// Nueva ruta para obtener TODO sin filtrar
+app.get('/api/all-products', async (req, res) => {
+  try {
+    const products = await repository.read();
+    res.send(products);
+  } catch (error) {
+    res.status(500).send({ error: "Error al obtener catálogo completo" });
+  }
+});
 
 
 

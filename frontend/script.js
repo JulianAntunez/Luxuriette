@@ -1,15 +1,9 @@
 let productList = [];
+let allProductsMaster = [];
 let carrito = [];
 let total = 0;
 let currentPage = 1;
 const itemsPerPage = 24;
-
-
-// window.onload = async () => {
-//     await fetchProducts(1);
-//     loadCart();
-//     autoUpdateCart(); // Llama a la función de actualización automática
-// };
 
 // Agrega un producto al carrito
 function add(productId, price) {
@@ -35,6 +29,15 @@ function add(productId, price) {
 
 // Función para actualizar la visualización del carrito
 function updateCartDisplay() {
+    const totalArticulos = carrito.reduce((acc, item) => acc + (item.quantity || 1), 0);
+    const cartCountElement = document.querySelector("#cart-icon .cart-count");
+
+    if (cartCountElement) {
+        cartCountElement.textContent = totalArticulos;
+        // Mostrar solo si hay más de 0 productos
+        cartCountElement.style.display = totalArticulos > 0 ? "inline-block" : "none";
+    }
+
     const checkoutElement = document.getElementById("checkout");
     if (checkoutElement) {
         checkoutElement.innerHTML = "Total: $ " + total.toFixed(2);
@@ -47,44 +50,18 @@ function updateCartDisplay() {
     updateCartModal();
 }
 
-// Renderiza el carrito en el modal
-// function updateCartModal() {
-//     const cartItems = document.getElementById("cart-items");
-//     const cartTotal = document.getElementById("cart-total");
-//     cartItems.innerHTML = '';
-
-//     let totalModal = 0;
-
-//     carrito.forEach(item => {
-//         const product = productList.find(p => p.Id == item.id);
-//         const quantity = item.quantity;
-//         const subtotal = quantity * product.Precio;
-//         totalModal += subtotal;
-
-//         const li = document.createElement('li');
-//         li.innerHTML = `
-//             <span class="item-name">${product.Producto}</span>
-//             <span class="item-price">${quantity}  x  $${product.Precio.toFixed(2)}</span>
-//             <button onclick="remove(${item.id})">❌</button>
-//         `;
-//         cartItems.appendChild(li);
-//     });
-
-//     cartTotal.textContent = `$${totalModal.toFixed(2)}`;
-// }
+// --- FUNCIONES DE ACTUALIZACIÓN DEL MODAL ---
 function updateCartModal() {
     const cartItems = document.getElementById("cart-items");
     const cartTotal = document.getElementById("cart-total");
-    if (!cartItems || !cartTotal) return; // Seguridad por si no existen los elementos
+    if (!cartItems || !cartTotal) return;
 
     cartItems.innerHTML = '';
     let totalModal = 0;
 
     carrito.forEach(item => {
-        // Buscamos el producto en la lista cargada
-        const product = productList.find(p => p.Id == item.id);
+        const product = allProductsMaster.find(p => p.Id == item.id);
         
-        // SI EL PRODUCTO EXISTE EN LA LISTA:
         if (product) {
             const quantity = item.quantity || 1;
             const precio = parseFloat(product.Precio) || 0;
@@ -95,35 +72,83 @@ function updateCartModal() {
             li.innerHTML = `
                 <span class="item-name">${product.Producto}</span>
                 <span class="item-price">${quantity} x $${precio.toFixed(2)}</span>
-                <button onclick="remove(${item.id})">❌</button>
+                <button class="btn-remove-item" data-id="${item.id}">❌</button>
             `;
             cartItems.appendChild(li);
-        } else {
-            // Si el producto no está en la lista (ej. se borró del Excel)
-            console.warn(`Producto con ID ${item.id} no encontrado en la lista actual.`);
         }
+    });
+
+    // Manejador de clics para eliminar SIN cerrar el modal
+    const removeButtons = document.querySelectorAll(".btn-remove-item");
+    removeButtons.forEach(button => {
+        button.onclick = function(event) {
+            event.stopPropagation(); // Evita que el clic cierre el carrito
+            const productId = parseInt(this.getAttribute("data-id"));
+            remove(productId); 
+        };
     });
 
     cartTotal.textContent = `$${totalModal.toFixed(2)}`;
 }
+// function updateCartModal() {
+//     const cartItems = document.getElementById("cart-items");
+//     const cartTotal = document.getElementById("cart-total");
+//     if (!cartItems || !cartTotal) return;
 
+//     cartItems.innerHTML = '';
+//     let totalModal = 0;
+
+//     carrito.forEach(item => {
+//         const product = allProductsMaster.find(p => p.Id == item.id);
+        
+//         if (product) {
+//             const quantity = item.quantity || 1;
+//             const precio = parseFloat(product.Precio) || 0;
+//             const subtotal = quantity * precio;
+//             totalModal += subtotal;
+
+//             const li = document.createElement('li');
+//             // IMPORTANTE: Quitamos el onclick="remove()" del HTML y usamos una clase
+//             li.innerHTML = `
+//                 <span class="item-name">${product.Producto}</span>
+//                 <span class="item-price">${quantity} x $${precio.toFixed(2)}</span>
+//                 <button class="btn-remove-item" data-id="${item.id}" style="cursor:pointer; background:none; border:none;">❌</button>
+//             `;
+//             cartItems.appendChild(li);
+//         }
+//     });
+
+//     // Manejador de clics para los botones de eliminar (Corregido)
+//     const removeButtons = document.querySelectorAll(".btn-remove-item");
+//     removeButtons.forEach(button => {
+//         button.onclick = function(event) {
+//             // Esto evita que el clic llegue al 'document' y cierre el modal
+//             event.stopPropagation(); 
+            
+//             const productId = parseInt(this.getAttribute("data-id"));
+//             remove(productId); 
+//         };
+//     });
+
+//     cartTotal.textContent = `$${totalModal.toFixed(2)}`;
+// }
 // Función para eliminar un producto del carrito
+
 function remove(productId) {
     const index = carrito.findIndex(item => item.id === productId);
     if (index !== -1) {
-        // Verifica si hay más de uno en el carrito
         if (carrito[index].quantity > 1) {
-            // Reduce la cantidad
             carrito[index].quantity--;
-            total -= carrito[index].price; // Restar el precio del total
+            total -= carrito[index].price;
         } else {
-            // Si solo hay uno, elimina el producto del carrito
-            total -= carrito[index].price * carrito[index].quantity; // Restar del total
-            carrito.splice(index, 1); // Eliminar producto del carrito
+            total -= carrito[index].price * carrito[index].quantity;
+            carrito.splice(index, 1);
         }
-        saveCart(); // Guardar cambios en almacenamiento local
-        updateCartDisplay(); // Actualizar visualización
-        updateCartModal(); // Asegúrate de actualizar el modal del carrito
+        
+        saveCart();
+        updateCartDisplay();
+        // Al llamar a updateCartModal aquí, el modal se refresca pero NO se oculta
+        updateCartModal(); 
     }
 }
 
@@ -189,43 +214,6 @@ async function pay() {
     }
 }
 // Muestra los productos en la interfaz
-// function displayProducts() {
-//     const startIndex = (currentPage - 1) * itemsPerPage;
-//     const endIndex = startIndex + itemsPerPage;
-//     const productsToDisplay = productList.slice(startIndex, endIndex);
-
-//     let productsHTML = '';
-//     productsToDisplay.forEach(p => {
-//         let buttonHTML = `<button class="button-add" onclick="add(${p.Id}, ${p.Precio})">Agregar</button>`;
-
-//         if (p.Stock <= 0) {
-//             buttonHTML = `<button disabled class="button-add-disabled">Sin Stock</button>`;
-//         }
-
-//         // Crear el carrusel de imágenes
-//         productsHTML += `
-//             <div class="product-container">
-//                 <h3>${p.Producto}</h3>
-//                 <div class="descr">
-//                     <h4>${p.Descripcion}</h4>
-//                 </div>
-//                 <div class="carousel">
-//                     <div class="image-container" onclick="changeImage(${p.Id}, 'next')">
-//                         <img src="${p.Img1}" alt="${p.Producto}" class="product-image" id="image-${p.Id}">
-//                         <div class="left-click-area" onclick="changeImage(${p.Id}, 'prev')"></div>
-//                         <div class="right-click-area" onclick="changeImage(${p.Id}, 'next')"></div>
-//                     </div>
-//                 </div>
-//                 <div class="product-footer">
-//                     <h1>$ ${p.Precio.toFixed(2)}</h1>
-//                     ${buttonHTML}
-//                 </div>
-//             </div>`;
-//     });
-//     document.getElementById("page-content").innerHTML = productsHTML;
-//     updatePagination();
-// }
-
 function displayProducts() {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -272,6 +260,7 @@ function displayProducts() {
     if (container) {
         container.innerHTML = productsHTML;
     }
+    renderProducts(productsToDisplay);
     updatePagination();
 }
 
@@ -313,94 +302,241 @@ function changePage(page, event) {
     window.scrollTo(0, 0);
 }
 
-// async function fetchProducts() {
-//     try {
-//         const response = await fetch('/api/products?sheet=Productos'); // Asegúrate de que esta línea esté correcta
-//         productList = await response.json();
 
-//         // Filtrar los productos con stock disponible
-//         productList = productList.filter(product => product.Stock > 0);
 
-//         // Actualizar la lista de productos en la interfaz
-//         displayProducts(); // Muestra los productos
-//     } catch (error) {
-//         console.error('Error al cargar los productos:', error);
-//     }
-// }
 async function fetchProducts(type) {
     try {
-        const response = await fetch(`/api/products/${type}`); // Cambia aquí para usar el tipo
-        productList = await response.json();
+        // 1. Cargamos el catálogo completo para el CARRITO (si está vacío)
+        if (allProductsMaster.length === 0) {
+            const resAll = await fetch('/api/all-products');
+            allProductsMaster = await resAll.json();
+        }
 
-        // Filtrar los productos con stock disponible
-       productList = productList.filter(p => p.Id && p.Producto); 
-displayProducts();
+        // 2. Cargamos los productos de la CATEGORÍA actual para la TIENDA
+        const resType = await fetch(`/api/products/${type}`);
+        productList = await resType.json();
+
+        // Filtrar por stock para la vista
+        productList = productList.filter(p => p.Stock > 0);
+
+        displayProducts();
     } catch (error) {
-        console.error('Error al cargar los productos:', error);
+        console.error('Error en la carga:', error);
     }
 }
+
+
 
 // Función de búsqueda de productos
 function searchProducts() {
-    const searchInput = document.querySelector('.form-control').value.toLowerCase(); // Obtener el valor de búsqueda
-    const filteredProducts = productList.filter(product =>
-        product.Producto.toLowerCase().includes(searchInput) // Filtrar productos que contengan el texto de búsqueda
-    );
+    const searchInput = document.querySelector('.form-control').value.toLowerCase().trim();
+    
+    // Si el buscador está vacío, mostramos la lista original y salimos
+    if (searchInput === "") {
+        displayProducts(); 
+        return;
+    }
 
-    displayFilteredProducts(filteredProducts); // Mostrar los productos filtrados
+    // Filtramos sobre la lista completa de la categoría
+    const filteredProducts = productList.filter(product => {
+        const nombre = product.Producto ? product.Producto.toLowerCase() : "";
+        const descripcion = product.Descripcion ? product.Descripcion.toLowerCase() : "";
+        return nombre.includes(searchInput) || descripcion.includes(searchInput);
+    });
+
+    // Si no hay resultados, mostramos un mensaje amistoso
+    if (filteredProducts.length === 0) {
+        document.getElementById("page-content").innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                <h3>No se encontraron productos que coincidan con "${searchInput}"</h3>
+                <button class="button-add" onclick="resetSearch()">Ver todos los productos</button>
+            </div>`;
+        document.getElementById("pagination").innerHTML = ""; // Ocultar paginación
+    } else {
+        // Reutilizamos displayProducts pero pasándole los filtrados
+        renderProducts(filteredProducts);
+    }
 }
 
-// Agregar un event listener al formulario
-document.addEventListener('DOMContentLoaded', () => {
-    const searchForm = document.querySelector('form[role="search"]');
-    if (searchForm) {
-        searchForm.addEventListener('submit', function (event) {
-            event.preventDefault(); // Evitar el envío del formulario
-            searchProducts(); // Llamar a la función de búsqueda
-        });
-    } else {
-        console.error('El formulario de búsqueda no se encontró');
+// Función auxiliar para resetear
+function resetSearch() {
+    document.querySelector('.form-control').value = "";
+    displayProducts();
+}
+
+function renderProducts(lista) {
+    let productsHTML = '';
+    
+    lista.forEach(p => {
+        const precioNumero = (p.Precio !== null && !isNaN(p.Precio)) ? parseFloat(p.Precio) : 0;
+        const imgPrincipal = p.Img1 || 'https://via.placeholder.com/150?text=Sin+Imagen';
+        
+        let buttonHTML = `<button class="button-add" onclick="add(${p.Id}, ${precioNumero})">Agregar</button>`;
+        if (!p.Stock || p.Stock <= 0) {
+            buttonHTML = `<button disabled class="button-add-disabled">Sin Stock</button>`;
+        }
+
+        productsHTML += `
+            <div class="product-container">
+                <h3>${p.Producto || 'Sin nombre'}</h3>
+                <div class="descr"><h4>${p.Descripcion || ''}</h4></div>
+                <div class="carousel">
+                    <div class="image-container">
+                        <img src="${imgPrincipal}" alt="${p.Producto}" class="product-image" id="image-${p.Id}">
+                        <div class="left-click-area" onclick="changeImage(${p.Id}, 'prev')"></div>
+                        <div class="right-click-area" onclick="changeImage(${p.Id}, 'next')"></div>
+                    </div>
+                </div>
+                <div class="product-footer">
+                    <h1>$ ${precioNumero.toFixed(2)}</h1>
+                    ${buttonHTML}
+                </div>
+            </div>`;
+    });
+
+    const container = document.getElementById("page-content");
+    if (container) container.innerHTML = productsHTML;
+}
+
+// --- CONFIGURACIÓN DE EVENTOS PRINCIPALES ---
+document.addEventListener('DOMContentLoaded', async () => {
+    let type = 1; 
+    if (window.location.pathname.includes('juguetes')) type = 2;
+    if (window.location.pathname.includes('ropa')) type = 3;
+
+    await fetchProducts(type); 
+    loadCart(); 
+    autoUpdateCart();
+
+    function closeNavbar() {
+        const navbarCollapse = document.getElementById('navbarCollapse');
+        if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+            const bsCollapse = new bootstrap.Collapse(navbarCollapse, { toggle: false });
+            bsCollapse.hide();
+        }
     }
 
-    // Manejar el icono del carrito
+    // Evento Abrir Carrito
     const cartIcon = document.getElementById("cart-icon");
     if (cartIcon) {
-        cartIcon.onclick = function () {
+        cartIcon.onclick = function (e) {
+            e.stopPropagation(); // Evita que se cierre al intentar abrirlo
+            closeNavbar();
             document.getElementById("cart-modal").style.display = "block";
-            updateCartModal(); // Asegúrate de llamar a esta función al abrir el modal
+            updateCartModal();
         };
-    } else {
-        console.error('El icono del carrito no se encontró');
     }
 
-    // Manejar el botón de cerrar del modal
-    const closeButton = document.querySelector(".close");
-    if (closeButton) {
-        closeButton.onclick = function () {
-            document.getElementById("cart-modal").style.display = "none";
-        };
-    } else {
-        console.error('El botón de cerrar no se encontró');
-    }
-
-    // Manejar el botón de pago
-    const checkoutButton = document.getElementById("checkout-button");
-    if (checkoutButton) {
-        checkoutButton.onclick = async function () {
-            await pay();
-        };
-    } else {
-        console.error('El botón de pago no se encontró');
-    }
-
-    // Cerrar el modal si se hace clic fuera
-    window.onclick = function (event) {
+    // Evento Cerrar Clic Fuera
+    document.addEventListener('click', function (event) {
         const modal = document.getElementById("cart-modal");
-        if (event.target === modal) {
-            modal.style.display = "none";
+        const cartIcon = document.getElementById("cart-icon");
+        const navbarCollapse = document.getElementById('navbarCollapse');
+        const navbarToggler = document.querySelector('.navbar-toggler');
+
+        // Cerrar carrito si el clic no es dentro del modal ni en el icono
+        if (modal && modal.style.display === "block") {
+            if (!modal.contains(event.target) && !cartIcon.contains(event.target)) {
+                modal.style.display = "none";
+            }
         }
-    };
+
+        // Cerrar Navbar si se toca fuera
+        if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+            if (!navbarCollapse.contains(event.target) && !navbarToggler.contains(event.target)) {
+                closeNavbar();
+            }
+        }
+    });
+
+    const searchInput = document.querySelector('.form-control');
+if (searchInput) {
+    searchInput.addEventListener('input', function() {
+        searchProducts(); // Se ejecuta cada vez que escribes una letra
+    });
+}
 });
+
+// document.addEventListener('DOMContentLoaded', async () => {
+//     // 1. DETERMINAR EL TIPO DE PÁGINA
+//     let type = 1; 
+//     if (window.location.pathname.includes('juguetes')) type = 2;
+//     if (window.location.pathname.includes('ropa')) type = 3;
+
+//     // 2. CARGAR DATOS
+//     await fetchProducts(type); 
+//     loadCart(); 
+//     autoUpdateCart();
+
+//     // 3. FUNCIÓN PARA CERRAR NAVBAR (Bootstrap)
+//     function closeNavbar() {
+//         const navbarCollapse = document.getElementById('navbarCollapse');
+//         if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+//             const bsCollapse = new bootstrap.Collapse(navbarCollapse, { toggle: false });
+//             bsCollapse.hide();
+//         }
+//     }
+
+//     // --- CONFIGURACIÓN DE EVENTOS ---
+
+//     // Buscador
+//     const searchForm = document.querySelector('form[role="search"]');
+//     if (searchForm) {
+//         searchForm.addEventListener('submit', function (event) {
+//             event.preventDefault();
+//             searchProducts();
+//             closeNavbar(); // Opcional: cierra el menú al buscar
+//         });
+//     }
+
+//     // Carrito (Abrir y cerrar Navbar)
+//     const cartIcon = document.getElementById("cart-icon");
+//     if (cartIcon) {
+//         cartIcon.onclick = function () {
+//             closeNavbar(); // ESTO soluciona lo de tu imagen: cierra el menú verde
+//             document.getElementById("cart-modal").style.display = "block";
+//             updateCartModal();
+//         };
+//     }
+
+//     // Botón Cerrar Modal (X)
+//     const closeButton = document.querySelector(".close");
+//     if (closeButton) {
+//         closeButton.onclick = function () {
+//             document.getElementById("cart-modal").style.display = "none";
+//         };
+//     }
+
+//     // Botón Pagar
+//     const checkoutButton = document.getElementById("checkout-button");
+//     if (checkoutButton) {
+//         checkoutButton.onclick = async function () {
+//             await pay();
+//         };
+//     }
+
+//     // 4. DETECTAR CLIC FUERA (Para cerrar Carrito y Navbar automáticamente)
+//     document.addEventListener('click', function (event) {
+//         const modal = document.getElementById("cart-modal");
+//         const cartIcon = document.getElementById("cart-icon");
+//         const navbarCollapse = document.getElementById('navbarCollapse');
+//         const navbarToggler = document.querySelector('.navbar-toggler');
+
+//         // Cerrar Carrito si se toca fuera
+//         if (modal && modal.style.display === "block") {
+//             if (!modal.contains(event.target) && !cartIcon.contains(event.target)) {
+//                 modal.style.display = "none";
+//             }
+//         }
+
+//         // Cerrar Navbar si se toca fuera (especialmente en móviles)
+//         if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+//             if (!navbarCollapse.contains(event.target) && !navbarToggler.contains(event.target)) {
+//                 closeNavbar();
+//             }
+//         }
+//     });
+// });
 
 // Función para mostrar productos filtrados
 function displayFilteredProducts(filteredProducts) {
@@ -428,15 +564,3 @@ function autoUpdateCart() {
         updateCartDisplay(); // Actualizar visualización del carrito
     }, 5000); // Actualiza cada 5 segundos (5000 ms)
 }
-
-// Reemplaza todos tus window.onload por este bloque único:
-document.addEventListener('DOMContentLoaded', async () => {
-    // Detectar el tipo según la página (puedes usar una variable global en el HTML o el nombre del archivo)
-    let type = 1; // Por defecto
-    if (window.location.pathname.includes('juguetes')) type = 2;
-    if (window.location.pathname.includes('ropa')) type = 3;
-
-    await fetchProducts(type);
-    loadCart();
-    autoUpdateCart();
-});

@@ -131,13 +131,19 @@
                         <!-- <li class="nav-item"><a class="nav-link" href="#">Ofertas</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li> -->
                     </ul>
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search" />
+                    <form class="d-none d-md-flex ms-auto me-2" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Buscar...">
                         <button class="btn btn-outline-success" type="submit">🔍</button>
-                        <button class="btn btn-outline-primary ms-2" type="button" id="cart-icon">
-                            <i class="fas fa-shopping-cart"></i>Carrito
-                        </button>
                     </form>
+
+                    <div class="d-flex align-items-center order-md-2">
+                        <button class="btn d-md-none btn-outline-success border-0" onclick="toggleSearch()">🔍</button>
+
+                        <button class="btn btn-outline-primary ms-1 position-relative" id="cart-icon">
+                            🛒
+                            <span class="cart-count badge rounded-pill bg-danger">0</span>
+                        </button>
+                    </div>
 
                 </div>
             </div>
@@ -156,15 +162,15 @@
         <!-- Carrito Modal -->
         <div id="cart-modal" class="cart-modal">
             <div class="cart-modal-content">
-                <span class="cart-count">0</span>
-                <h2> Carrito
+                <span class="cart-count"></span>
+                <h2> Carrito 
                     <span class="close" onclick="closeModal()">&times;</span>
                 </h2>
                 <ul id="cart-items"></ul>
                 <div class="cart-footer">
                     <button id="checkout-button">Pagar</button>
                     <p>TOTAL: <span id="cart-total">$0.00</span></p>
-                    <span class="cart-count">0</span>
+                    <!-- <span class="cart-count">0</span> -->
                 </div>
             </div>
         </div>
