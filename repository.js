@@ -16,6 +16,7 @@ const auth = new google.auth.GoogleAuth({
 });
 
 const spreadsheetId = "1wihpFZbKGo4gBsMgmSDur8HbgUO6P8cW3ftNbcHEQG4";
+console.log("El ID cargado es:", spreadsheetId); // <--- AGREGA ESTA LÍNEA
 
 
 /**
