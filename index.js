@@ -4,7 +4,8 @@ const path = require('path');
 const repository = require('./repository.js');
 
 const app = express();
-const port = 3000;
+// const port = 3000;
+const port = process.env.PORT || 10000;
 
 // --- MIDDLEWARES ---
 app.use(bodyParser.urlencoded({ extended: true }));
