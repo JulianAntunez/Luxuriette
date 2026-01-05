@@ -15,7 +15,8 @@ const auth = new google.auth.GoogleAuth({
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 
-const spreadsheetId = process.env.SPREAD_SHEET_ID;
+const spreadsheetId = "1wihpFZbKGo4gBsMgmSDur8HbgUO6P8cW3ftNbcHEQG4";
+
 
 /**
  * Lee los productos de la hoja "Productos"
