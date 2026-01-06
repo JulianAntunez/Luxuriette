@@ -853,9 +853,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById("btn-age-no")?.addEventListener("click", rejectAge);
 
     // 2. CARGA DE PRODUCTOS
-    let type = 1;
-    if (location.pathname.includes('juguetes')) type = 2;
-    if (location.pathname.includes('ropa')) type = 3;
+   const container = document.getElementById("page-content");
+    if (container) {
+        let type = 1;
+        if (location.pathname.includes('juguetes')) type = 2;
+        if (location.pathname.includes('ropa')) type = 3;
+        fetchProducts(type);
+    } else {
+        console.log("Página de inicio detectada: No se cargan productos dinámicos.");
+    }
     
     fetchProducts(type);
     loadCart();
