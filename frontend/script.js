@@ -838,38 +838,38 @@ async function pay() {
 //     });
 // });
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. RESTRICCIÓN DE EDAD (Prioridad alta)
+    // 1. Verificación de Edad
     const ageModal = document.getElementById("age-verification-modal");
-    const isVerified = localStorage.getItem("ageVerified") === "true";
-
-    if (isVerified) {
+    if (localStorage.getItem("ageVerified") === "true") {
         if (ageModal) ageModal.style.display = "none";
     } else {
         if (ageModal) ageModal.style.display = "flex";
     }
 
-    // Vincular botones del modal
     document.getElementById("btn-age-yes")?.addEventListener("click", verifyAge);
     document.getElementById("btn-age-no")?.addEventListener("click", rejectAge);
 
-    // 2. CARGA DE PRODUCTOS
-   const container = document.getElementById("page-content");
+    // 2. Carga Dinámica de Productos (EL ARREGLO ESTÁ AQUÍ)
+    const container = document.getElementById("page-content");
+    
     if (container) {
-        let type = 1;
+        // Definimos 'type' con un valor por defecto
+        let type = 1; 
         if (location.pathname.includes('juguetes')) type = 2;
         if (location.pathname.includes('ropa')) type = 3;
-        fetchProducts(type);
+        
+        fetchProducts(type); // Ahora 'type' siempre existe aquí
     } else {
-        console.log("Página de inicio detectada: No se cargan productos dinámicos.");
+        console.log("Página sin contenedor de productos (Inicio).");
     }
-    
-    fetchProducts(type);
+
+    // 3. Inicializar Carrito y Buscadores
     loadCart();
 
-    // 3. BUSCADOR Y CARRITO (Eventos)
     document.getElementById('search-input')?.addEventListener('input', searchProducts);
     document.getElementById('search-input-mobile')?.addEventListener('input', searchProducts);
 
+    // 4. Lógica del Carrito
     const cartIcon = document.getElementById("cart-icon");
     if (cartIcon) {
         cartIcon.onclick = (e) => {
@@ -881,13 +881,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
     }
-
-    // 4. CLIC FUERA PARA CERRAR
-    document.addEventListener('click', (e) => {
-        const modal = document.getElementById("cart-modal");
-        const icon = document.getElementById("cart-icon");
-        if (modal?.style.display === "block" && !modal.contains(e.target) && !icon?.contains(e.target)) {
-            modal.style.display = "none";
-        }
-    });
 });
