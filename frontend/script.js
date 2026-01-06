@@ -794,34 +794,93 @@ async function pay() {
 
 // --- 5. INICIALIZACIÓN ---
 
+// document.addEventListener('DOMContentLoaded', () => {
+//     // Verificar edad
+//     const btnYes = document.getElementById("btn-age-yes");
+//     if (btnYes) {
+//         btnYes.onclick = verifyAge; // Llama a la función que ya tienes escrita
+//     }
+//     const btnNo = document.getElementById("btn-age-no");
+//     if (btnNo) {
+//         btnNo.onclick = rejectAge; // Llama a la función que te manda a Google
+//     }
+//     if (localStorage.getItem("ageVerified") === "true") {
+//         const modal = document.getElementById("age-verification-modal");
+//         if (modal) modal.style.display = "none";
+//     } else {
+//         const modal = document.getElementById("age-verification-modal");
+//         if (modal) modal.style.display = "flex"; // Forzamos que se vea si no hay verificación
+//     }
+
+//     let type = 1;
+//     if (location.pathname.includes('juguetes')) type = 2;
+//     if (location.pathname.includes('ropa')) type = 3;
+//     fetchProducts(type);
+//     loadCart();
+
+//     // Eventos de Input
+//     document.getElementById('search-input')?.addEventListener('input', searchProducts);
+//     document.getElementById('search-input-mobile')?.addEventListener('input', searchProducts);
+
+//     // Abrir Carrito
+//     document.getElementById("cart-icon").onclick = (e) => {
+//         e.stopPropagation();
+//         document.getElementById("cart-modal").style.display = "block";
+//         updateCartModal();
+//     };
+
+//     // Cerrar al hacer clic fuera
+//     document.addEventListener('click', (e) => {
+//         const modal = document.getElementById("cart-modal");
+//         if (modal?.style.display === "block" && !modal.contains(e.target) && !document.getElementById("cart-icon").contains(e.target)) {
+//             modal.style.display = "none";
+//         }
+//     });
+// });
 document.addEventListener('DOMContentLoaded', () => {
-    // Verificar edad
-    if (localStorage.getItem("ageVerified") === "true") {
-        const modal = document.getElementById("age-verification-modal");
-        if (modal) modal.style.display = "none";
+    // 1. RESTRICCIÓN DE EDAD (Prioridad alta)
+    const ageModal = document.getElementById("age-verification-modal");
+    const isVerified = localStorage.getItem("ageVerified") === "true";
+
+    if (isVerified) {
+        if (ageModal) ageModal.style.display = "none";
+    } else {
+        if (ageModal) ageModal.style.display = "flex";
     }
 
+    // Vincular botones del modal
+    document.getElementById("btn-age-yes")?.addEventListener("click", verifyAge);
+    document.getElementById("btn-age-no")?.addEventListener("click", rejectAge);
+
+    // 2. CARGA DE PRODUCTOS
     let type = 1;
     if (location.pathname.includes('juguetes')) type = 2;
     if (location.pathname.includes('ropa')) type = 3;
+    
     fetchProducts(type);
     loadCart();
 
-    // Eventos de Input
+    // 3. BUSCADOR Y CARRITO (Eventos)
     document.getElementById('search-input')?.addEventListener('input', searchProducts);
     document.getElementById('search-input-mobile')?.addEventListener('input', searchProducts);
 
-    // Abrir Carrito
-    document.getElementById("cart-icon").onclick = (e) => {
-        e.stopPropagation();
-        document.getElementById("cart-modal").style.display = "block";
-        updateCartModal();
-    };
+    const cartIcon = document.getElementById("cart-icon");
+    if (cartIcon) {
+        cartIcon.onclick = (e) => {
+            e.stopPropagation();
+            const modal = document.getElementById("cart-modal");
+            if (modal) {
+                modal.style.display = "block";
+                updateCartModal();
+            }
+        };
+    }
 
-    // Cerrar al hacer clic fuera
+    // 4. CLIC FUERA PARA CERRAR
     document.addEventListener('click', (e) => {
         const modal = document.getElementById("cart-modal");
-        if (modal?.style.display === "block" && !modal.contains(e.target) && !document.getElementById("cart-icon").contains(e.target)) {
+        const icon = document.getElementById("cart-icon");
+        if (modal?.style.display === "block" && !modal.contains(e.target) && !icon?.contains(e.target)) {
             modal.style.display = "none";
         }
     });
