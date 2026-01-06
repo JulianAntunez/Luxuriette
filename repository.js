@@ -15,8 +15,9 @@ const auth = new google.auth.GoogleAuth({
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 
-const spreadsheetId = "1wihpFZbKGo4gBsMgmSDur8HbgUO6P8cW3ftNbcHEQG4";
-console.log("El ID cargado es:", spreadsheetId); // <--- AGREGA ESTA LÍNEA
+// const spreadsheetId = "1wihpFZbKGo4gBsMgmSDur8HbgUO6P8cW3ftNbcHEQG4";
+const spreadsheetId = process.env.SPREAD_SHEET_ID;
+// console.log("El ID cargado es:", spreadsheetId); // <--- AGREGA ESTA LÍNEA
 
 
 /**
@@ -98,12 +99,40 @@ async function write(products) {
 /**
  * Registra una nueva fila en la hoja "Ventas"
  */
+// async function logVenta(datos) {
+//   try {
+//     const authClient = await auth.getClient();
+    
+//     const values = [[
+//       "MP-" + Date.now(), 
+//       new Date().toLocaleString('es-AR'), 
+//       datos.productos,
+//       datos.cantidad,
+//       "Mercado Pago",
+//       datos.total
+//     ]];
+
+//     const result = await sheets.spreadsheets.values.append({
+//       spreadsheetId: spreadsheetId,
+//       range: "Ventas!A:F",
+//       valueInputOption: 'RAW',
+//       requestBody: { values },
+//       auth: authClient,
+//     });
+
+//     console.log("Venta registrada exitosamente en historial.");
+//     return { success: true };
+//   } catch (error) {
+//     console.error("Error en logVenta:", error.message);
+//     return { success: false, error: error.message };
+//   }
+// }
 async function logVenta(datos) {
   try {
     const authClient = await auth.getClient();
     
     const values = [[
-      "MP-" + Date.now(), 
+      datos.id || ("MP-" + Date.now()), // Usa el ID que viene del servidor o genera uno si no hay
       new Date().toLocaleString('es-AR'), 
       datos.productos,
       datos.cantidad,
@@ -113,7 +142,7 @@ async function logVenta(datos) {
 
     const result = await sheets.spreadsheets.values.append({
       spreadsheetId: spreadsheetId,
-      range: "Ventas!A:F",
+      range: "Ventas!A:F", // Asegúrate que la hoja se llame exactamente "Ventas"
       valueInputOption: 'RAW',
       requestBody: { values },
       auth: authClient,

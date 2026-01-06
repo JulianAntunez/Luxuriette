@@ -112,13 +112,15 @@ app.post('/api/pay', async (req, res) => {
         }
 
         // B. Registrar Venta con ID único
-        const idTransaccion = "MP-" + Date.now();
-        const resumenVenta = {
-            productos: nombresParaRegistro.join(", "),
-            cantidad: totalArticulos,
-            total: totalVenta
-        };
-        await repository.logVenta(resumenVenta);
+    
+const idTransaccion = "MP-" + Date.now();
+const resumenVenta = {
+    id: idTransaccion, // <-- Agregamos el ID aquí
+    productos: nombresParaRegistro.join(", "),
+    cantidad: totalArticulos,
+    total: totalVenta
+};
+await repository.logVenta(resumenVenta);
 
         // 6. RESPUESTA ÚNICA EXITOSA
         return res.status(200).json({ 

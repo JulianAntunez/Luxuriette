@@ -309,54 +309,66 @@ async function pay() {
 }
 // Muestra los productos en la interfaz
 function displayProducts() {
+    // 1. Calculamos qué productos mostrar según la página actual
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const productsToDisplay = productList.slice(startIndex, endIndex);
 
-    let productsHTML = '';
-    productsToDisplay.forEach(p => {
-        // --- VALIDACIONES DE SEGURIDAD ---
-        // 1. Verificamos que el precio exista y sea un número para evitar el error de toFixed
-        const precioNumero = (p.Precio !== null && !isNaN(p.Precio)) ? p.Precio : 0;
-        const precioFormateado = precioNumero.toFixed(2);
-
-        // 2. Verificamos que las imágenes existan, si no, ponemos una por defecto
-        const imgPrincipal = p.Img1 || 'https://via.placeholder.com/150?text=Sin+Imagen';
-
-        // Lógica del botón de stock
-        let buttonHTML = `<button class="button-add" onclick="add(${p.Id}, ${precioNumero})">Agregar</button>`;
-        if (!p.Stock || p.Stock <= 0) {
-            buttonHTML = `<button disabled class="button-add-disabled">Sin Stock</button>`;
-        }
-
-        // --- CONSTRUCCIÓN DEL HTML ---
-        productsHTML += `
-            <div class="product-container">
-                <h3>${p.Producto || 'Producto sin nombre'}</h3>
-                <div class="descr">
-                    <h4>${p.Descripcion || 'Sin descripción disponible'}</h4>
-                </div>
-                <div class="carousel">
-                    <div class="image-container" onclick="changeImage(${p.Id}, 'next')">
-                        <img src="${imgPrincipal}" alt="${p.Producto}" class="product-image" id="image-${p.Id}">
-                        <div class="left-click-area" onclick="changeImage(${p.Id}, 'prev')"></div>
-                        <div class="right-click-area" onclick="changeImage(${p.Id}, 'next')"></div>
-                    </div>
-                </div>
-                <div class="product-footer">
-                    <h1>$ ${precioFormateado}</h1>
-                    ${buttonHTML}
-                </div>
-            </div>`;
-    });
-
-    const container = document.getElementById("page-content");
-    if (container) {
-        container.innerHTML = productsHTML;
-    }
+    // 2. Llamamos a la función encargada de dibujar los productos en pantalla
     renderProducts(productsToDisplay);
+    
+    // 3. Actualizamos los botones de paginación
     updatePagination();
 }
+// function displayProducts() {
+//     const startIndex = (currentPage - 1) * itemsPerPage;
+//     const endIndex = startIndex + itemsPerPage;
+//     const productsToDisplay = productList.slice(startIndex, endIndex);
+
+//     let productsHTML = '';
+//     productsToDisplay.forEach(p => {
+//         // --- VALIDACIONES DE SEGURIDAD ---
+//         // 1. Verificamos que el precio exista y sea un número para evitar el error de toFixed
+//         const precioNumero = (p.Precio !== null && !isNaN(p.Precio)) ? p.Precio : 0;
+//         const precioFormateado = precioNumero.toFixed(2);
+
+//         // 2. Verificamos que las imágenes existan, si no, ponemos una por defecto
+//         const imgPrincipal = p.Img1 || 'https://via.placeholder.com/150?text=Sin+Imagen';
+
+//         // Lógica del botón de stock
+//         let buttonHTML = `<button class="button-add" onclick="add(${p.Id}, ${precioNumero})">Agregar</button>`;
+//         if (!p.Stock || p.Stock <= 0) {
+//             buttonHTML = `<button disabled class="button-add-disabled">Sin Stock</button>`;
+//         }
+
+//         // --- CONSTRUCCIÓN DEL HTML ---
+//         productsHTML += `
+//             <div class="product-container">
+//                 <h3>${p.Producto || 'Producto sin nombre'}</h3>
+//                 <div class="descr">
+//                     <h4>${p.Descripcion || 'Sin descripción disponible'}</h4>
+//                 </div>
+//                 <div class="carousel">
+//                     <div class="image-container" onclick="changeImage(${p.Id}, 'next')">
+//                         <img src="${imgPrincipal}" alt="${p.Producto}" class="product-image" id="image-${p.Id}">
+//                         <div class="left-click-area" onclick="changeImage(${p.Id}, 'prev')"></div>
+//                         <div class="right-click-area" onclick="changeImage(${p.Id}, 'next')"></div>
+//                     </div>
+//                 </div>
+//                 <div class="product-footer">
+//                     <h1>$ ${precioFormateado}</h1>
+//                     ${buttonHTML}
+//                 </div>
+//             </div>`;
+//     });
+
+//     const container = document.getElementById("page-content");
+//     if (container) {
+//         container.innerHTML = productsHTML;
+//     }
+//     renderProducts(productsToDisplay);
+//     updatePagination();
+// }
 
 // Función para cambiar la imagen del carrusel
 function changeImage(productId, direction) {
