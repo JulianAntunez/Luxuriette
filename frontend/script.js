@@ -494,23 +494,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 
-function displayFilteredProducts(filteredProducts) {
-    let productsHTML = '';
-    filteredProducts.forEach(p => {
-        productsHTML += `
-            <div class="product-container">
-                <h3>${p.Producto}</h3>
-                <h4>${p.Descripcion}</h4>
-                <img src="${p.Img1}" alt="${p.Producto}" class="product-image">
-                <h1>$ ${p.Precio.toFixed(2)}</h1>
-                ${p.Stock > 0
-                ? `<button class="button-add" onclick="add(${p.Id}, ${p.Precio})">Agregar</button>`
-                : `<button disabled class="button-add-disabled">Sin Stock</button>`
-            }
-            </div>`;
-    });
-    document.getElementById("page-content").innerHTML = productsHTML;
-}
+// function displayFilteredProducts(filteredProducts) {
+//     let productsHTML = '';
+//     filteredProducts.forEach(p => {
+//         productsHTML += `
+//             <div class="product-container">
+//                 <h3>${p.Producto}</h3>
+//                 <h4>${p.Descripcion}</h4>
+//                 <img src="${p.Img1}" alt="${p.Producto}" class="product-image">
+//                 <h1>$ ${p.Precio.toFixed(2)}</h1>
+//                 ${p.Stock > 0
+//                 ? `<button class="button-add" onclick="add(${p.Id}, ${p.Precio})">Agregar</button>`
+//                 : `<button disabled class="button-add-disabled">Sin Stock</button>`
+//             }
+//             </div>`;
+//     });
+//     document.getElementById("page-content").innerHTML = productsHTML;
+// }
 
 // Función para actualizar el carrito automáticamente
 function autoUpdateCart() {
@@ -518,4 +518,21 @@ function autoUpdateCart() {
         loadCart(); // Cargar el carrito desde el almacenamiento local
         updateCartDisplay(); // Actualizar visualización del carrito
     }, 5000); // Actualiza cada 5 segundos (5000 ms)
+}
+document.addEventListener("DOMContentLoaded", function() {
+    // Verificamos si ya aceptó la edad anteriormente (usando localStorage)
+    if (localStorage.getItem("ageVerified") === "true") {
+        document.getElementById("age-verification-modal").style.display = "none";
+    }
+});
+
+function verifyAge() {
+    // Guardamos la verificación para que no pregunte de nuevo en esta PC/celular
+    localStorage.setItem("ageVerified", "true");
+    document.getElementById("age-verification-modal").style.display = "none";
+}
+
+function rejectAge() {
+    // Si dice que no, lo mandamos a Google
+    window.location.href = "https://www.google.com";
 }
