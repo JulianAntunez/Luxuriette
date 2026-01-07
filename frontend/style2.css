@@ -114,66 +114,44 @@ body {
 /* =========================================
    3. MODAL DE VERIFICACIÓN DE EDAD (ESMERILADO)
    ========================================= */
-/* Contenedor que cubre TODO y aplica el esmerilado */
+/* =========================================
+   3. MODAL DE VERIFICACIÓN DE EDAD (ESMERILADO)
+   ========================================= */
 .age-modal-overlay {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-    background-color: rgba(0, 0, 0, 0.6) !important; /* Fondo oscuro */
+    background-color: rgba(0, 0, 0, 0.7) !important; /* Un poco más oscuro para resaltar el texto */
     
-    /* EFECTO ESMERILADO (Blur) */
+    /* EFECTO ESMERILADO */
     backdrop-filter: blur(15px) !important;
     -webkit-backdrop-filter: blur(15px) !important;
     
-    /* CENTRADO TOTAL (AQUÍ SE MUEVE AL CÍRCULO VERDE) */
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    /* CENTRADO TOTAL ABSOLUTO */
+    display: flex !important;           /* Activa Flexbox */
+    align-items: center !important;      /* Centra verticalmente */
+    justify-content: center !important;  /* Centra horizontalmente */
     
-    z-index: 10000 !important; /* Por encima de cualquier carrusel o nav */
+    z-index: 99999 !important; /* Valor altísimo para ganar a Bootstrap */
 }
 
-/* El cuadro del mensaje (Lo marcado en rojo) */
 .age-modal-content {
-    background-color: #1a1a1a !important; /* Fondo oscuro sólido */
+    background-color: #1a1a1a !important;
     padding: 40px !important;
     border-radius: 20px !important;
     text-align: center !important;
     max-width: 450px !important;
     width: 90% !important;
-    border: 2px solid #d4af37 !important; /* Borde dorado */
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8) !important;
+    border: 2px solid #d4af37 !important; /* Dorado Luxuriette */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 1) !important;
     color: white !important;
+    /* Eliminamos cualquier margen que pueda heredar de Bootstrap */
+    margin: auto !important; 
 }
 
-/* Botones con estilo elegante */
-.age-modal-buttons {
-    margin-top: 25px !important;
-    display: flex !important;
-    gap: 15px !important;
-    justify-content: center !important;
-}
 
-.btn-verify-yes {
-    background: #d4af37 !important;
-    color: black !important;
-    padding: 12px 25px !important;
-    border: none !important;
-    border-radius: 8px !important;
-    font-weight: bold !important;
-    cursor: pointer !important;
-}
-
-.btn-verify-no {
-    background: #333 !important;
-    color: white !important;
-    padding: 12px 25px !important;
-    border: 1px solid #444 !important;
-    border-radius: 8px !important;
-    cursor: pointer !important;
-}
 /* =========================================
    4. CARRITO MODAL
    ========================================= */

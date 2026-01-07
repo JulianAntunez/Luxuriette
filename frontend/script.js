@@ -14,13 +14,13 @@ function verifyAge() {
 
     localStorage.setItem("ageVerified", "true");
 
-    // Animación de salida
-    modal.style.transition = "opacity 0.5s ease, visibility 0.5s";
+    // Desvanecimiento suave
+    modal.style.transition = "opacity 0.5s ease";
     modal.style.opacity = "0";
-    modal.style.visibility = "hidden";
 
     setTimeout(() => {
-        modal.style.display = "none";
+        // Usamos setProperty para ganarle al !important del CSS
+        modal.style.setProperty("display", "none", "important");
     }, 500);
 }
 
