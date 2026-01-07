@@ -21,6 +21,25 @@
 </head>
 
 <body>
+    <div class="modal fade" id="ageVerificationModal" tabindex="-1" aria-labelledby="ageVerificationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ageVerificationModalLabel">Verificación de Edad</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Este sitio contiene bebidas alcohólicas. ¿Eres mayor de 18 años?</p>
+                    <img src="ruta/a/tu/logo.png" alt="Tu Logo" class="img-fluid mb-3" style="max-height: 100px;">
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-success" id="btnAdulto">Sí, soy mayor de 18</button>
+                    <button type="button" class="btn btn-danger" id="btnMenor">No, soy menor</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
         <symbol id="check2" viewBox="0 0 16 16">
             <path
@@ -94,58 +113,63 @@
     </div>
 
     <header data-bs-theme="dark">
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <div class="container-fluid d-flex align-items-center">
-            <a class="navbar-brand" href="#">Tienda</a>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid d-flex align-items-center">
+                <a class="navbar-brand" href="#">Tienda</a>
 
-            <div class="d-flex align-items-center ms-auto me-2 order-md-2">
-                <button class="btn d-md-none btn-outline-success border-0" onclick="toggleSearch()">🔍</button>
+                <div class="d-flex align-items-center ms-auto me-2 order-md-2">
+                    <button class="btn d-md-none btn-outline-success border-0" onclick="toggleSearch()">🔍</button>
 
-                <button class="btn btn-outline-primary ms-1 position-relative" id="cart-icon">
-                    🛒
-                    <span class="cart-count badge rounded-pill bg-danger">0</span>
+                    <button class="btn btn-outline-primary ms-1 position-relative" id="cart-icon">
+                        🛒
+                        <span class="cart-count badge rounded-pill bg-danger">0</span>
+                    </button>
+                </div>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
+
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="../index.html">Inicio</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">Productos</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="./productos.html">Productos</a></li>
+                                <li><a class="dropdown-item" href="./juguetes.html">Juguetes</a></li>
+                                <li><a class="dropdown-item" href="./ropa.html">Ropas</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="./ofertas.html">Ofertas</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <form class="d-none d-md-flex ms-auto me-2" role="search">
+                        <input class="form-control me-2" type="search" id="search-input" placeholder="Buscar...">
+                        <button class="btn btn-outline-success" type="button" onclick="searchProducts()">🔍</button>
+                    </form>
+                </div>
             </div>
+        </nav>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="../index.html">Inicio</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Productos</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="./productos.html">Productos</a></li>
-                            <li><a class="dropdown-item" href="./juguetes.html">Juguetes</a></li>
-                            <li><a class="dropdown-item" href="./ropa.html">Ropas</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="./ofertas.html">Ofertas</a></li>
-                        </ul>
-                    </li>
-                </ul>
-
-                <form class="d-none d-md-flex ms-auto me-2" role="search">
-                    <input class="form-control me-2" type="search" id="search-input" placeholder="Buscar...">
-                    <button class="btn btn-outline-success" type="button" onclick="searchProducts()">🔍</button>
-                </form>
+        <div id="mobile-search-bar" class="bg-dark p-2 d-none d-md-none"
+            style="margin-top: 56px; border-top: 1px solid #444; position: fixed; width: 100%; z-index: 1030;">
+            <div class="container-fluid">
+                <div class="input-group">
+                    <input type="search" id="search-input-mobile" class="form-control"
+                        placeholder="¿Qué estás buscando?">
+                    <button class="btn btn-success" type="button" onclick="searchProducts()">Buscar</button>
+                </div>
             </div>
         </div>
-    </nav>
-
-    <div id="mobile-search-bar" class="bg-dark p-2 d-none d-md-none" style="margin-top: 56px; border-top: 1px solid #444; position: fixed; width: 100%; z-index: 1030;">
-        <div class="container-fluid">
-            <div class="input-group">
-                <input type="search" id="search-input-mobile" class="form-control" placeholder="¿Qué estás buscando?">
-                <button class="btn btn-success" type="button" onclick="searchProducts()">Buscar</button>
-            </div>
-        </div>
-    </div>
-</header>
+    </header>
 
     <main>
         <section id="page-content" class="productos">
@@ -176,8 +200,10 @@
     <footer class="container">
         <p class="float-end"><a href="#">Back to top</a></p>
         <p>
-             &copy; 2026 Luxuriette. Todos los derechos reservados. Ubicados en <strong>Puerto Iguazú, Misiones</strong>. Envíos locales y atención personalizada.
-            <a href="../frontend/pages/privacy.html">Privacy</a> &middot; <a href="../frontend/pages/terms.html">Terms</a>
+            &copy; 2026 Luxuriette. Todos los derechos reservados. Ubicados en <strong>Puerto Iguazú, Misiones</strong>.
+            Envíos locales y atención personalizada.
+            <a href="../frontend/pages/privacy.html">Privacy</a> &middot; <a
+                href="../frontend/pages/terms.html">Terms</a>
         </p>
         <div>
             <ul class="social-media d-flex justify-content-center list-unstyled">

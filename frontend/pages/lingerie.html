@@ -9,67 +9,92 @@
 </head>
 
 <body>
+    <div class="modal fade" id="ageVerificationModal" tabindex="-1" aria-labelledby="ageVerificationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ageVerificationModalLabel">Verificación de Edad</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Este sitio contiene bebidas alcohólicas. ¿Eres mayor de 18 años?</p>
+                    <img src="ruta/a/tu/logo.png" alt="Tu Logo" class="img-fluid mb-3" style="max-height: 100px;">
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-success" id="btnAdulto">Sí, soy mayor de 18</button>
+                    <button type="button" class="btn btn-danger" id="btnMenor">No, soy menor</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <header>
         <div class="logo">Luxuriette</div>
         <nav>
             <nav>
-            <ul>
-                <li><a href="../index.html">Inicio</a></li>
-                <li class="dropdown">
-                    <a href="#">Catálogo ▾</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="./lingerie.html">Lingerie</a></li>
-                        <li><a href="./juguetes.html">Juguetes</a></li>
-                    </ul>
-                </li>
-                <li><a href="#" id="cart-button">Carrito (<span id="cart-count">0</span>)</a></li>
-            </ul>
-        </nav>
+                <ul>
+                    <li><a href="../index.html">Inicio</a></li>
+                    <li class="dropdown">
+                        <a href="#">Catálogo ▾</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="./lingerie.html">Lingerie</a></li>
+                            <li><a href="./juguetes.html">Juguetes</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" id="cart-button">Carrito (<span id="cart-count">0</span>)</a></li>
+                </ul>
+            </nav>
         </nav>
     </header>
     <main>
-         <section class="productos-d2">
+        <section class="productos-d2">
             <div class="productos">
                 <div class="producto">
                     <img src="../img/lingerie/producto1.jpg" alt="Producto 1">
                     <h3>Producto 1</h3>
                     <p>Descripción del producto 1</p>
-                    <button class="add-to-cart" data-product-id="1" data-product-name="Producto 1" data-product-price="50">Agregar al Carrito</button>
+                    <button class="add-to-cart" data-product-id="1" data-product-name="Producto 1"
+                        data-product-price="50">Agregar al Carrito</button>
                 </div>
                 <div class="producto">
                     <img src="../img/lingerie/producto2.jpg" alt="Producto 2">
                     <h3>Producto 2</h3>
                     <p>Descripción del producto 2</p>
-                    <button class="add-to-cart" data-product-id="2" data-product-name="Producto 2" data-product-price="70">Agregar al Carrito</button>
+                    <button class="add-to-cart" data-product-id="2" data-product-name="Producto 2"
+                        data-product-price="70">Agregar al Carrito</button>
                 </div>
                 <div class="producto">
                     <img src="../img/lingerie/producto3.jpg" alt="Producto 3">
                     <h3>Producto 3</h3>
                     <p>Descripción del producto 3</p>
-                    <button class="add-to-cart" data-product-id="3" data-product-name="Producto 3" data-product-price="30">Agregar al Carrito</button>
+                    <button class="add-to-cart" data-product-id="3" data-product-name="Producto 3"
+                        data-product-price="30">Agregar al Carrito</button>
                 </div>
                 <div class="producto">
                     <img src="../img/lingerie/producto4.jpg" alt="Producto 4">
                     <h3>Producto 4</h3>
                     <p>Descripción del producto 4</p>
-                    <button class="add-to-cart" data-product-id="3" data-product-name="Producto 4" data-product-price="40">Agregar al Carrito</button>
+                    <button class="add-to-cart" data-product-id="3" data-product-name="Producto 4"
+                        data-product-price="40">Agregar al Carrito</button>
                 </div>
                 <div class="producto">
                     <img src="../img/lingerie/producto5.jpg" alt="Producto 5">
                     <h3>Producto 5</h3>
                     <p>Descripción del producto 5</p>
-                    <button class="add-to-cart" data-product-id="5" data-product-name="Producto 3" data-product-price="550">Agregar al Carrito</button>
+                    <button class="add-to-cart" data-product-id="5" data-product-name="Producto 3"
+                        data-product-price="550">Agregar al Carrito</button>
                 </div>
             </div>
         </section>
     </main>
-    
+
     <footer>
-        &copy; 2026 Luxuriette. Todos los derechos reservados. Ubicados en <strong>Puerto Iguazú, Misiones</strong>. Envíos locales y atención personalizada.
-            <a href="../frontend/pages/privacy.html">Privacy</a> &middot; <a href="../frontend/pages/terms.html">Terms</a>
+        &copy; 2026 Luxuriette. Todos los derechos reservados. Ubicados en <strong>Puerto Iguazú, Misiones</strong>.
+        Envíos locales y atención personalizada.
+        <a href="../frontend/pages/privacy.html">Privacy</a> &middot; <a href="../frontend/pages/terms.html">Terms</a>
     </footer>
 
-        <!-- Carrito Modal -->
+    <!-- Carrito Modal -->
     <div id="cart-modal" class="cart-modal">
         <div class="cart-modal-content">
             <span class="close">&times;</span>
