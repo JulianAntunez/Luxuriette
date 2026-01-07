@@ -117,40 +117,40 @@ body {
 /* =========================================
    3. MODAL DE VERIFICACIÓN DE EDAD (ESMERILADO)
    ========================================= */
+/* =========================================
+   3. MODAL DE VERIFICACIÓN DE EDAD
+   ========================================= */
 .age-modal-overlay {
-    position: fixed !important;
+    position: fixed !important; /* Cambiado de absolute a fixed para ignorar el scroll */
     top: 0 !important;
     left: 0 !important;
     width: 100vw !important;
-    height: 100vh !important;
-    background-color: rgba(0, 0, 0, 0.7) !important; /* Un poco más oscuro para resaltar el texto */
+    height: 100vh !important; /* Forza a que el contenedor mida TODA la pantalla */
+    background-color: rgba(0, 0, 0, 0.7) !important; 
     
     /* EFECTO ESMERILADO */
     backdrop-filter: blur(15px) !important;
     -webkit-backdrop-filter: blur(15px) !important;
     
-    /* CENTRADO TOTAL ABSOLUTO */
-    display: flex !important;           /* Activa Flexbox */
-    align-items: center !important;      /* Centra verticalmente */
-    justify-content: center !important;  /* Centra horizontalmente */
+    /* CENTRADO TOTAL (Círculo Verde) */
+    display: flex !important;
+    align-items: center !important;    /* Centrado Vertical */
+    justify-content: center !important; /* Centrado Horizontal */
     
-    z-index: 99999 !important; /* Valor altísimo para ganar a Bootstrap */
+    z-index: 99999 !important; /* Asegura que esté por encima de TODO */
 }
 
 .age-modal-content {
+    /* Quitamos cualquier margen automático que Bootstrap pueda estar inyectando */
+    margin: 0 !important; 
     background-color: #1a1a1a !important;
     padding: 40px !important;
     border-radius: 20px !important;
-    text-align: center !important;
-    max-width: 450px !important;
+    border: 2px solid #d4af37 !important;
+    max-width: 400px !important;
     width: 90% !important;
-    border: 2px solid #d4af37 !important; /* Dorado Luxuriette */
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 1) !important;
-    color: white !important;
-    /* Eliminamos cualquier margen que pueda heredar de Bootstrap */
-    margin: auto !important; 
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9) !important;
 }
-
 
 /* =========================================
    4. CARRITO MODAL
