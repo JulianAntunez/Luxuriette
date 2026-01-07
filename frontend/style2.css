@@ -408,3 +408,6 @@ span.close {
     text-decoration: underline;
 }
 
+#tulogo {
+    max-height: 100px;
+}
