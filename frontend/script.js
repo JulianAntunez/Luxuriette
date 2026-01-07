@@ -203,7 +203,19 @@ function searchProducts() {
         document.getElementById("pagination").innerHTML = "";
     }
 }
-
+function toggleSearch() {
+    const searchBar = document.getElementById("mobile-search-bar");
+    if (searchBar) {
+        // Si tiene la clase d-none (oculto), se la quitamos. Si no, se la ponemos.
+        if (searchBar.classList.contains("d-none")) {
+            searchBar.classList.remove("d-none");
+            // Opcional: poner el foco automáticamente en el input
+            document.getElementById("search-input-mobile")?.focus();
+        } else {
+            searchBar.classList.add("d-none");
+        }
+    }
+}
 function renderProducts(lista) {
     let html = '';
     lista.forEach(p => {
