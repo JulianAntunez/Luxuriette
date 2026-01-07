@@ -318,18 +318,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById("btn-age-yes")?.addEventListener("click", verifyAge);
     document.getElementById("btn-age-no")?.addEventListener("click", rejectAge);
 
-    // 2. Carga Dinámica de Productos (EL ARREGLO ESTÁ AQUÍ)
+    // 2. Carga Dinámica de Productos
     const container = document.getElementById("page-content");
-    
     if (container) {
-        // Definimos 'type' con un valor por defecto
         let type = 1; 
-        if (location.pathname.includes('juguetes')) type = 2;
-        if (location.pathname.includes('ropa')) type = 3;
+        const path = location.pathname.toLowerCase(); // Convertimos a minúsculas para evitar errores
         
-        fetchProducts(type); // Ahora 'type' siempre existe aquí
-    } else {
-        console.log("Página sin contenedor de productos (Inicio).");
+        if (path.includes('juguetes')) type = 2;
+        else if (path.includes('ropa')) type = 3;
+        else if (path.includes('ofertas')) type = 4; // Agregué ofertas por si acaso
+        
+        fetchProducts(type);
     }
 
     // 3. Inicializar Carrito y Buscadores
@@ -337,8 +336,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('search-input')?.addEventListener('input', searchProducts);
     document.getElementById('search-input-mobile')?.addEventListener('input', searchProducts);
+    
+    // Vinculamos el botón de pago
+    document.getElementById("checkout-button")?.addEventListener("click", pay);
 
-    // 4. Lógica del Carrito
+    // 4. Lógica de Apertura del Carrito
     const cartIcon = document.getElementById("cart-icon");
     if (cartIcon) {
         cartIcon.onclick = (e) => {
@@ -351,3 +353,9 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 });
+
+// 5. FUNCIÓN PARA CERRAR EL MODAL (Agrégala fuera del DOMContentLoaded)
+function closeModal() {
+    const modal = document.getElementById("cart-modal");
+    if (modal) modal.style.display = "none";
+}
