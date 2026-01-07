@@ -25,16 +25,25 @@
 </head>
 
 <body>
-    <div id="age-verification-modal" class="age-modal-overlay">
-        <div class="age-modal-content">
-            <h2>🔞 Contenido Adulto</h2>
-            <p>Debes ser mayor de 18 años para ingresar a <strong>Luxuriette</strong>.</p>
-            <div class="age-modal-buttons">
-                <button id="btn-age-yes" class="btn-verify-yes">Sí, soy mayor</button>
-                <button id="btn-age-no" class="btn-verify-no">No soy mayor</button>
-            </div>
-        </div>
+    <!-- Modal de Verificación de Edad -->
+<div class="modal fade" id="ageVerificationModal" tabindex="-1" aria-labelledby="ageVerificationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ageVerificationModalLabel">Verificación de Edad</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p>Este sitio contiene bebidas alcohólicas. ¿Eres mayor de 18 años?</p>
+        <img src="ruta/a/tu/logo.png" alt="Tu Logo" class="img-fluid mb-3" style="max-height: 100px;">
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-success" id="btnAdulto">Sí, soy mayor de 18</button>
+        <button type="button" class="btn btn-danger" id="btnMenor">No, soy menor</button>
+      </div>
     </div>
+  </div>
+</div>
 
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
         <symbol id="check2" viewBox="0 0 16 16">

@@ -8,25 +8,25 @@ const itemsPerPage = 24;
 // --- 1. FUNCIONES GLOBALES (ACCESIBLES DESDE EL HTML) ---
 
 // Verificación de Edad
-function verifyAge() {
-    const modal = document.getElementById("age-verification-modal");
-    if (!modal) return;
+// function verifyAge() {
+//     const modal = document.getElementById("age-verification-modal");
+//     if (!modal) return;
 
-    localStorage.setItem("ageVerified", "true");
+//     localStorage.setItem("ageVerified", "true");
 
-    // Desvanecimiento suave
-    modal.style.transition = "opacity 0.5s ease";
-    modal.style.opacity = "0";
+//     // Desvanecimiento suave
+//     modal.style.transition = "opacity 0.5s ease";
+//     modal.style.opacity = "0";
 
-    setTimeout(() => {
-        // Usamos setProperty para ganarle al !important del CSS
-        modal.style.setProperty("display", "none", "important");
-    }, 500);
-}
+//     setTimeout(() => {
+//         // Usamos setProperty para ganarle al !important del CSS
+//         modal.style.setProperty("display", "none", "important");
+//     }, 500);
+// }
 
-function rejectAge() {
-    window.location.href = "https://www.google.com";
-}
+// function rejectAge() {
+//     window.location.href = "https://www.google.com";
+// }
 
 // Agregar al carrito
 function add(productId, price) {
@@ -279,27 +279,46 @@ async function pay() {
 // --- 5. INICIALIZACIÓN ---
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Verificación de Edad
-    const ageModal = document.getElementById("age-verification-modal");
-  if (localStorage.getItem("ageVerified") === "true") {
-    if (ageModal) ageModal.style.setProperty("display", "none", "important");
-} else {
-    // IMPORTANTE: Aquí debe ser flex para que se centre
-    if (ageModal) ageModal.style.setProperty("display", "flex", "important");
-}
+    // const ageModal = document.getElementById("age-verification-modal");
+    // if (localStorage.getItem("ageVerified") === "true") {
+    //     if (ageModal) ageModal.style.setProperty("display", "none", "important");
+    // } else {
+    //     // IMPORTANTE: Aquí debe ser flex para que se centre
+    //     if (ageModal) ageModal.style.setProperty("display", "flex", "important");
+    // }
 
-    document.getElementById("btn-age-yes")?.addEventListener("click", verifyAge);
-    document.getElementById("btn-age-no")?.addEventListener("click", rejectAge);
+    // document.getElementById("btn-age-yes")?.addEventListener("click", verifyAge);
+    // document.getElementById("btn-age-no")?.addEventListener("click", rejectAge);
+     // Verifica si el usuario ya confirmó (guardado en localStorage)
+  if (localStorage.getItem('ageVerified') !== 'yes') {
+    // Muestra el modal al cargar la página
+    var myModal = new bootstrap.Modal(document.getElementById('ageVerificationModal'));
+    myModal.show();
+  }
+
+  // Al hacer clic en "Sí, soy mayor"
+  document.getElementById('btnAdulto').addEventListener('click', function() {
+    localStorage.setItem('ageVerified', 'yes'); // Guarda la confirmación
+    myModal.hide(); // Oculta el modal
+    // Si usas WordPress, podrías tener un plugin que reaccione a esto, o podrías redirigir/cargar contenido principal aquí
+  });
+
+  // Al hacer clic en "No, soy menor"
+  document.getElementById('btnMenor').addEventListener('click', function() {
+    // Redirige a una página segura (ej. Google o una página informativa)
+    window.location.href = 'https://www.google.com'; // Cambia por la URL deseada
+  });
 
     // 2. Carga Dinámica de Productos
     const container = document.getElementById("page-content");
     if (container) {
-        let type = 1; 
+        let type = 1;
         const path = location.pathname.toLowerCase(); // Convertimos a minúsculas para evitar errores
-        
+
         if (path.includes('juguetes')) type = 2;
         else if (path.includes('ropa')) type = 3;
         else if (path.includes('ofertas')) type = 4; // Agregué ofertas por si acaso
-        
+
         fetchProducts(type);
     }
 
@@ -308,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('search-input')?.addEventListener('input', searchProducts);
     document.getElementById('search-input-mobile')?.addEventListener('input', searchProducts);
-    
+
     // Vinculamos el botón de pago
     document.getElementById("checkout-button")?.addEventListener("click", pay);
 
