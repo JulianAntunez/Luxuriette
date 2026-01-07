@@ -280,11 +280,12 @@ async function pay() {
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Verificación de Edad
     const ageModal = document.getElementById("age-verification-modal");
-    if (localStorage.getItem("ageVerified") === "true") {
-        if (ageModal) ageModal.style.display = "none";
-    } else {
-        if (ageModal) ageModal.style.display = "flex";
-    }
+  if (localStorage.getItem("ageVerified") === "true") {
+    if (ageModal) ageModal.style.setProperty("display", "none", "important");
+} else {
+    // IMPORTANTE: Aquí debe ser flex para que se centre
+    if (ageModal) ageModal.style.setProperty("display", "flex", "important");
+}
 
     document.getElementById("btn-age-yes")?.addEventListener("click", verifyAge);
     document.getElementById("btn-age-no")?.addEventListener("click", rejectAge);
