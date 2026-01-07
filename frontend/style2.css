@@ -379,12 +379,18 @@ span.close {
     color: white;
     box-shadow: 0 4px 10px rgba(113, 44, 249, 0.3);
 }
-
+/*
 #mobile-search-bar {
     position: absolute;
     width: 100%;
-    z-index: 1020; /* Para que quede encima de otros elementos */
+    z-index: 1020;  Para que quede encima de otros elementos 
     animation: slideDown 0.3s ease-out;
+}*/
+#mobile-search-bar {
+    position: absolute;
+    z-index: 1020;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
 }
 
 @keyframes slideDown {
