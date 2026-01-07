@@ -10,12 +10,15 @@ const itemsPerPage = 24;
 // Verificación de Edad
 function verifyAge() {
     const modal = document.getElementById("age-verification-modal");
+    if (!modal) return;
+
     localStorage.setItem("ageVerified", "true");
-    
-    // Efecto de desvanecimiento simple
+
+    // Animación de salida
+    modal.style.transition = "opacity 0.5s ease, visibility 0.5s";
     modal.style.opacity = "0";
-    modal.style.transition = "opacity 0.5s ease";
-    
+    modal.style.visibility = "hidden";
+
     setTimeout(() => {
         modal.style.display = "none";
     }, 500);
