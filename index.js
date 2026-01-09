@@ -48,111 +48,15 @@ app.get('/api/all-products', async (req, res) => {
 
 // --- RUTA DE PAGO Y GESTIÓN DE STOCK ---
 
-// app.post('/api/pay', async (req, res) => {
-//     try {
-//         const carrito = req.body; // [{id, price, quantity, nombre}]
-
-//         if (!Array.isArray(carrito) || carrito.length === 0) {
-//             return res.status(400).json({ error: 'El carrito está vacío' });
-//         }
-
-//         // 1. Agrupar cantidades solicitadas por ID
-//         const cantidadPorProducto = {};
-//         carrito.forEach(item => {
-//             const id = item.id;
-//             const qty = item.quantity || 1;
-//             cantidadPorProducto[id] = (cantidadPorProducto[id] || 0) + qty;
-//         });
-
-//         // 2. Leer stock actual de la base de datos
-//         const productosMaster = await repository.read();
-
-//         // 3. Validar si hay stock suficiente
-//         const faltantes = [];
-//         for (const id in cantidadPorProducto) {
-//             const producto = productosMaster.find(p => Number(p.Id) === Number(id));
-
-//             if (!producto) {
-//                 faltantes.push({ id, motivo: 'Producto no existe' });
-//             } else if (Number(producto.Stock) < cantidadPorProducto[id]) {
-//                 faltantes.push({
-//                     id,
-//                     producto: producto.Producto,
-//                     disponible: producto.Stock,
-//                     solicitado: cantidadPorProducto[id]
-//                 });
-//             }
-//         }
-
-//         if (faltantes.length > 0) {
-//             return res.status(409).json({ error: 'Stock insuficiente', detalles: faltantes });
-//         }
-
-//         // 4. Calcular totales y preparar actualización
-//         let totalVenta = 0;
-//         let nombresParaRegistro = [];
-//         let totalArticulos = 0;
-
-//         const productosActualizados = productosMaster.map(p => {
-//             const qtyComprada = cantidadPorProducto[p.Id] || 0;
-//             if (qtyComprada > 0) {
-//                 totalVenta += (Number(p.Precio) * qtyComprada);
-//                 totalArticulos += qtyComprada;
-//                 // Formato con ID entre paréntesis
-//                 nombresParaRegistro.push(`(${p.Id}) ${p.Producto} (x${qtyComprada})`);
-
-//                 return {
-//                     ...p,
-//                     Stock: Number(p.Stock) - qtyComprada
-//                 };
-//             }
-//             return p;
-//         });
-
-//         // 5. ESCRIBIR EN GOOGLE SHEETS
-
-//         // A. Actualizar stock
-//         const resultadoStock = await repository.write(productosActualizados);
-//         if (!resultadoStock.success) {
-//             throw new Error(resultadoStock.error || "Error al escribir stock");
-//         }
-
-//         // B. Registrar Venta con ID único
-
-//         const idTransaccion = "MP-" + Date.now();
-//         const resumenVenta = {
-//             id: idTransaccion, // <-- Agregamos el ID aquí
-//             productos: nombresParaRegistro.join(", "),
-//             cantidad: totalArticulos,
-//             total: totalVenta
-//         };
-//         await repository.logVenta(resumenVenta);
-
-//         // 6. RESPUESTA ÚNICA EXITOSA
-//         return res.status(200).json({
-//             success: true,
-//             idVenta: idTransaccion,
-//             total: totalVenta
-//         });
-
-//     } catch (error) {
-//         console.error('Error crítico en el proceso de pago:', error);
-
-//         // Evitamos enviar doble respuesta si hubo error después de enviar éxito
-//         if (!res.headersSent) {
-//             return res.status(500).json({ error: 'Error interno del servidor al procesar el pago' });
-//         }
-//     }
-// });
 app.post('/api/pay', async (req, res) => {
     try {
-        const carrito = req.body; // [{id, price, quantity, nombre}]
+        const carrito = req.body;
 
         if (!Array.isArray(carrito) || carrito.length === 0) {
             return res.status(400).json({ error: 'El carrito está vacío' });
         }
 
-        // --- 1. VALIDACIÓN DE STOCK (Tu lógica original) ---
+        // 1. VALIDACIÓN DE STOCK
         const cantidadPorProducto = {};
         carrito.forEach(item => {
             const id = item.id;
@@ -181,28 +85,25 @@ app.post('/api/pay', async (req, res) => {
             return res.status(409).json({ error: 'Stock insuficiente', detalles: faltantes });
         }
 
-        // --- 2. CÁLCULO DE TOTALES PARA MERCADO PAGO ---
+        // 2. CREACIÓN DE LA PREFERENCIA
         const idVentaUnico = "MP-" + Date.now();
-
-        // --- 3. CREACIÓN DE LA PREFERENCIA ---
         const preference = new Preference(client);
 
         const body = {
             items: carrito.map(item => ({
                 id: String(item.id),
-                title: item.nombre,
+                title: String(item.nombre).substring(0, 250), // MP limita a 256 caracteres
                 quantity: Number(item.quantity),
                 unit_price: Number(item.price),
                 currency_id: 'ARS'
             })),
             back_urls: {
-                // Cambia estas URLs por las de tu dominio real cuando lo subas
-                success: `${req.protocol}://${req.get('host')}/success.html`,
-                failure: `${req.protocol}://${req.get('host')}/index.html`,
-                pending: `${req.protocol}://${req.get('host')}/pending.html`,
+                // USAMOS URLS MANUALES CON HTTPS PARA EVITAR EL ERROR invalid_auto_return
+                success: "https://luxuriette.onrender.com/success.html",
+                failure: "https://luxuriette.onrender.com/index.html",
+                pending: "https://luxuriette.onrender.com/index.html",
             },
             auto_return: "approved",
-            // IMPORTANTE: Guardamos todo el pedido para usarlo después del pago
             external_reference: JSON.stringify({
                 idVenta: idVentaUnico,
                 items: carrito
@@ -211,15 +112,20 @@ app.post('/api/pay', async (req, res) => {
 
         const response = await preference.create({ body });
 
-        // --- 4. RESPUESTA AL FRONTEND ---
-        // Aquí no descontamos stock aún, solo enviamos el ID para abrir el modal
         res.status(200).json({ 
             preferenceId: response.id,
             idVenta: idVentaUnico 
         });
 
     } catch (error) {
-        console.error('Error crítico al crear preferencia:', error);
+        console.error('--- ERROR EN MERCADO PAGO ---');
+        // Esto captura el error específico que devuelve la API de MP
+        if (error.apiResponse && error.apiResponse.body) {
+            console.error('Detalle técnico:', JSON.stringify(error.apiResponse.body, null, 2));
+        } else {
+            console.error('Mensaje:', error.message);
+        }
+
         if (!res.headersSent) {
             return res.status(500).json({ error: 'Error interno al procesar el pago' });
         }
