@@ -263,15 +263,53 @@ function updatePagination() {
 //     locale: 'es-AR'
 // });
 
-async function pay() {
-    if (carrito.length === 0) return alert("Carrito vacío");
+// async function pay() {
+//     if (carrito.length === 0) return alert("Carrito vacío");
     
+//     const btn = document.getElementById("checkout-button");
+//     btn.disabled = true; 
+//     btn.innerText = "Generando link de pago...";
+
+//     try {
+//         // 1. Llamamos a tu API (que modificaremos en el siguiente paso)
+//         const res = await fetch("/api/pay", { 
+//             method: 'POST', 
+//             body: JSON.stringify(carrito), 
+//             headers: { 'Content-Type': 'application/json' } 
+//         });
+        
+//         const result = await res.json();
+        
+//         if (!res.ok) throw new Error(result.error || "Error al procesar");
+
+//         // 2. Usar el checkout de Mercado Pago
+//         // Esto abrirá la ventana de pago sobre tu sitio
+//         mp.checkout({
+//             preferenceId: result.preferenceId,
+//             autoOpen: true 
+//         });
+
+//         // NOTA: No vaciamos el carrito aquí, 
+//         // lo haremos cuando el pago sea exitoso.
+
+//     } catch (e) { 
+//         alert(e.message); 
+//     } finally { 
+//         btn.disabled = false; 
+//         btn.innerText = "Pagar"; 
+//     }
+// }
+
+
+async function pay() {
+    console.log("Iniciando proceso de pago..."); // LOG 1
+    if (carrito.length === 0) return alert("Carrito vacío");
+
     const btn = document.getElementById("checkout-button");
     btn.disabled = true; 
-    btn.innerText = "Generando link de pago...";
+    btn.innerText = "Generando link...";
 
     try {
-        // 1. Llamamos a tu API (que modificaremos en el siguiente paso)
         const res = await fetch("/api/pay", { 
             method: 'POST', 
             body: JSON.stringify(carrito), 
@@ -279,27 +317,24 @@ async function pay() {
         });
         
         const result = await res.json();
-        
-        if (!res.ok) throw new Error(result.error || "Error al procesar");
+        console.log("Respuesta del servidor:", result); // LOG 2
 
-        // 2. Usar el checkout de Mercado Pago
-        // Esto abrirá la ventana de pago sobre tu sitio
-        mp.checkout({
-            preferenceId: result.preferenceId,
-            autoOpen: true 
-        });
-
-        // NOTA: No vaciamos el carrito aquí, 
-        // lo haremos cuando el pago sea exitoso.
-
-    } catch (e) { 
-        alert(e.message); 
-    } finally { 
-        btn.disabled = false; 
-        btn.innerText = "Pagar"; 
+        if (result.preferenceId) {
+            console.log("Abriendo Checkout con ID:", result.preferenceId); // LOG 3
+            mp.checkout({
+                preferenceId: result.preferenceId,
+                autoOpen: true 
+            });
+        } else {
+            alert("El servidor no devolvió un ID de pago.");
+        }
+    } catch (e) {
+        console.error("Error capturado:", e);
+    } finally {
+        btn.disabled = false;
+        btn.innerText = "Pagar";
     }
 }
-
 // --- 5. INICIALIZACIÓN ---
 document.addEventListener('DOMContentLoaded', () => {
    
@@ -342,8 +377,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('search-input-mobile')?.addEventListener('input', searchProducts);
 
     // Vinculamos el botón de pago
-    document.getElementById("checkout-button")?.addEventListener("click", pay);
-
+    document.addEventListener("click", (e) => {
+    if (e.target && e.target.id === "checkout-button") {
+        pay();
+    }
+});
     // 4. Lógica de Apertura del Carrito
     const cartIcon = document.getElementById("cart-icon");
     if (cartIcon) {
