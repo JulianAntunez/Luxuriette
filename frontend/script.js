@@ -4,29 +4,11 @@ let carrito = [];
 let total = 0;
 let currentPage = 1;
 const itemsPerPage = 24;
+const mp = new MercadoPago('APP_USR-aff751db-2be1-44d6-946e-b5d1255177a7', {
+    locale: 'es-AR'
+});
 
 // --- 1. FUNCIONES GLOBALES (ACCESIBLES DESDE EL HTML) ---
-
-// Verificación de Edad
-// function verifyAge() {
-//     const modal = document.getElementById("age-verification-modal");
-//     if (!modal) return;
-
-//     localStorage.setItem("ageVerified", "true");
-
-//     // Desvanecimiento suave
-//     modal.style.transition = "opacity 0.5s ease";
-//     modal.style.opacity = "0";
-
-//     setTimeout(() => {
-//         // Usamos setProperty para ganarle al !important del CSS
-//         modal.style.setProperty("display", "none", "important");
-//     }, 500);
-// }
-
-// function rejectAge() {
-//     window.location.href = "https://www.google.com";
-// }
 
 // Agregar al carrito
 function add(productId, price) {
@@ -256,40 +238,71 @@ function updatePagination() {
 
 // --- 4. PAGO POR WHATSAPP ---
 
+// async function pay() {
+//     if (carrito.length === 0) return alert("Carrito vacío");
+//     const btn = document.getElementById("checkout-button");
+//     btn.disabled = true; btn.innerText = "Procesando...";
+
+//     try {
+//         const res = await fetch("/api/pay", { method: 'POST', body: JSON.stringify(carrito), headers: { 'Content-Type': 'application/json' } });
+//         const result = await res.json();
+//         if (!res.ok) throw new Error(result.error || "Error");
+
+//         const lista = carrito.map(i => `- (${i.id}) ${i.nombre} x${i.quantity}`).join('%0A');
+//         const mensaje = `¡Hola *Luxuriette*! Pedido: ${result.idVenta}%0A*Detalle:*%0A${lista}%0A*Total:* $${result.total.toFixed(2)}%0A_Coordinemos el envío._`;
+        
+//         window.open(`https://wa.me/5493757677266?text=${mensaje}`, '_blank');
+//         carrito = []; total = 0; saveCart(); updateCartDisplay();
+//         document.getElementById("cart-modal").style.display = "none";
+//         location.reload(); 
+//     } catch (e) { alert(e.message); } finally { btn.disabled = false; btn.innerText = "Pagar"; }
+// }
+
+// Inicializar Mercado Pago (Usa tu Public Key de prueba primero)
+// const mp = new MercadoPago('TU_PUBLIC_KEY_AQUI', {
+//     locale: 'es-AR'
+// });
+
 async function pay() {
     if (carrito.length === 0) return alert("Carrito vacío");
+    
     const btn = document.getElementById("checkout-button");
-    btn.disabled = true; btn.innerText = "Procesando...";
+    btn.disabled = true; 
+    btn.innerText = "Generando link de pago...";
 
     try {
-        const res = await fetch("/api/pay", { method: 'POST', body: JSON.stringify(carrito), headers: { 'Content-Type': 'application/json' } });
-        const result = await res.json();
-        if (!res.ok) throw new Error(result.error || "Error");
-
-        const lista = carrito.map(i => `- (${i.id}) ${i.nombre} x${i.quantity}`).join('%0A');
-        const mensaje = `¡Hola *Luxuriette*! Pedido: ${result.idVenta}%0A*Detalle:*%0A${lista}%0A*Total:* $${result.total.toFixed(2)}%0A_Coordinemos el envío._`;
+        // 1. Llamamos a tu API (que modificaremos en el siguiente paso)
+        const res = await fetch("/api/pay", { 
+            method: 'POST', 
+            body: JSON.stringify(carrito), 
+            headers: { 'Content-Type': 'application/json' } 
+        });
         
-        window.open(`https://wa.me/5493757677266?text=${mensaje}`, '_blank');
-        carrito = []; total = 0; saveCart(); updateCartDisplay();
-        document.getElementById("cart-modal").style.display = "none";
-        location.reload(); 
-    } catch (e) { alert(e.message); } finally { btn.disabled = false; btn.innerText = "Pagar"; }
+        const result = await res.json();
+        
+        if (!res.ok) throw new Error(result.error || "Error al procesar");
+
+        // 2. Usar el checkout de Mercado Pago
+        // Esto abrirá la ventana de pago sobre tu sitio
+        mp.checkout({
+            preferenceId: result.preferenceId,
+            autoOpen: true 
+        });
+
+        // NOTA: No vaciamos el carrito aquí, 
+        // lo haremos cuando el pago sea exitoso.
+
+    } catch (e) { 
+        alert(e.message); 
+    } finally { 
+        btn.disabled = false; 
+        btn.innerText = "Pagar"; 
+    }
 }
 
 // --- 5. INICIALIZACIÓN ---
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Verificación de Edad
-    // const ageModal = document.getElementById("age-verification-modal");
-    // if (localStorage.getItem("ageVerified") === "true") {
-    //     if (ageModal) ageModal.style.setProperty("display", "none", "important");
-    // } else {
-    //     // IMPORTANTE: Aquí debe ser flex para que se centre
-    //     if (ageModal) ageModal.style.setProperty("display", "flex", "important");
-    // }
-
-    // document.getElementById("btn-age-yes")?.addEventListener("click", verifyAge);
-    // document.getElementById("btn-age-no")?.addEventListener("click", rejectAge);
-     // Verifica si el usuario ya confirmó (guardado en localStorage)
+   
   if (localStorage.getItem('ageVerified') !== 'yes') {
     // Muestra el modal al cargar la página
     var myModal = new bootstrap.Modal(document.getElementById('ageVerificationModal'));
