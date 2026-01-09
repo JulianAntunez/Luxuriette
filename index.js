@@ -5,8 +5,8 @@ const repository = require('./repository.js');
 const { MercadoPagoConfig, Preference } = require('mercadopago');
 
 // Configura tus credenciales
-const client = new MercadoPagoConfig({ 
-    accessToken: process.env.MP_ACCESS_TOKEN 
+const client = new MercadoPagoConfig({
+    accessToken: process.env.MP_ACCESS_TOKEN
 });
 
 const app = express();
@@ -112,22 +112,21 @@ app.post('/api/pay', async (req, res) => {
 
         const response = await preference.create({ body });
 
-        res.status(200).json({ 
+        res.status(200).json({
             preferenceId: response.id,
-            idVenta: idVentaUnico 
+            idVenta: idVentaUnico
         });
 
     } catch (error) {
-        console.error('--- ERROR EN MERCADO PAGO ---');
-        // Esto captura el error específico que devuelve la API de MP
+        console.error('--- ERROR DETECTADO ---');
+        console.error('Mensaje:', error.message);
         if (error.apiResponse && error.apiResponse.body) {
-            console.error('Detalle técnico:', JSON.stringify(error.apiResponse.body, null, 2));
-        } else {
-            console.error('Mensaje:', error.message);
+            console.error('Respuesta MP:', JSON.stringify(error.apiResponse.body, null, 2));
         }
 
         if (!res.headersSent) {
-            return res.status(500).json({ error: 'Error interno al procesar el pago' });
+            // Esto te dirá en el navegador cuál fue el error real
+            return res.status(500).json({ error: 'Fallo en el servidor: ' + error.message });
         }
     }
 });
@@ -140,7 +139,7 @@ app.post('/webhook', async (req, res) => {
     try {
         if (topic === "payment") {
             const paymentId = query.id || query['data.id'];
-            
+
             // 1. Consultar el estado del pago a Mercado Pago
             const response = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
                 headers: { Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}` }
